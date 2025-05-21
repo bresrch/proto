@@ -1,0 +1,113 @@
+syntax = "proto3";
+
+package proto.bresrch.v1;
+option go_package = "github.com/bresrch/proto/gen/v1";
+
+// Resource service defines operations for handling resources with data orchestration
+service Resource {
+  // Basic operations
+  rpc GetSupportedVersions(VersionRequest) returns (VersionResponse);
+    
+  // GetProviderConfiguration returns provider-specific configuration
+  rpc GetProviderConfiguration(ConfigRequest) returns (ConfigResponse);
+  
+  // Sync triggers a data sync from external API
+  rpc Sync(SyncRequest) returns (SyncResponse);
+  
+  // Push sends collected data back to bresrch
+  rpc Push(PushRequest) returns (PushResponse);
+  
+  // MigrateDatabase performs database migrations
+  rpc MigrateDatabase(MigrateRequest) returns (MigrateResponse);
+}
+
+// ConfigRequest requests provider configuration
+message ConfigRequest {
+  string provider_id = 1;
+  string environment = 2;  // e.g., "production", "staging"
+}
+
+// ConfigResponse returns provider configuration
+message ConfigResponse {
+  bool success = 1;
+  string error = 2;
+  bytes config = 3;  // JSON-encoded provider configuration
+}
+
+// SyncRequest triggers a data sync operation
+message SyncRequest {
+  string sync_id = 1;
+  string entity_type = 2;  // Type of data to sync (e.g., "users", "bubbles")
+  int64 since_timestamp = 3;  // Only sync data since this timestamp
+  map<string, string> options = 4;
+}
+
+// SyncResponse returns the result of a sync operation
+message SyncResponse {
+  bool success = 1;
+  string error = 2;
+  int64 records_synced = 3;
+  int64 last_sync_timestamp = 4;
+  SyncMetrics metrics = 5;
+}
+
+// SyncMetrics contains metrics about a sync operation
+message SyncMetrics {
+  int64 total_api_calls = 1;
+  int64 total_records_processed = 2;
+  int64 total_bytes_transferred = 3;
+  int64 total_time_ms = 4;
+  map<string, int64> operation_counts = 5;
+}
+
+// PushRequest sends data from provider to bresrch
+message PushRequest {
+  string entity_type = 1;
+  bytes data = 2;  // JSON-encoded data array
+  string sync_id = 3;
+}
+
+// PushResponse acknowledges data receipt
+message PushResponse {
+  bool success = 1;
+  string error = 2;
+  int64 records_processed = 3;
+}
+
+// MigrateRequest requests database migration
+message MigrateRequest {
+  string target_version = 1;
+  bool dry_run = 2;
+  map<string, bytes> migrations = 3;
+}
+
+// MigrateResponse returns migration results
+message MigrateResponse {
+  bool success = 1;
+  string error = 2;
+  string current_version = 3;
+  repeated MigrationOperation operations = 4;
+}
+
+// MigrationOperation represents a single migration step
+message MigrationOperation {
+  string version = 1;
+  string description = 2;
+  bool applied = 3;
+  int64 timestamp = 4;
+}
+
+// VersionRequest is sent to query supported protocol versions
+message VersionRequest {}
+
+// VersionResponse contains information about supported protocol versions
+message VersionResponse {
+  // List of supported major.minor versions (e.g. "1.0", "1.1", "2.0")
+  repeated string supported_versions = 1;
+  
+  // Minimum supported version (e.g. "1.0")
+  string min_version = 2;
+  
+  // Maximum supported version (e.g. "2.0")
+  string max_version = 3;
+}
