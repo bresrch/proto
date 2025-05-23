@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	Resource_GetSupportedVersions_FullMethodName     = "/proto.bresrch.v1.Resource/GetSupportedVersions"
 	Resource_GetProviderConfiguration_FullMethodName = "/proto.bresrch.v1.Resource/GetProviderConfiguration"
+	Resource_SetProviderConfiguration_FullMethodName = "/proto.bresrch.v1.Resource/SetProviderConfiguration"
 	Resource_Sync_FullMethodName                     = "/proto.bresrch.v1.Resource/Sync"
 	Resource_Push_FullMethodName                     = "/proto.bresrch.v1.Resource/Push"
 	Resource_MigrateDatabase_FullMethodName          = "/proto.bresrch.v1.Resource/MigrateDatabase"
@@ -36,6 +37,8 @@ type ResourceClient interface {
 	GetSupportedVersions(ctx context.Context, in *VersionRequest, opts ...grpc.CallOption) (*VersionResponse, error)
 	// GetProviderConfiguration returns provider-specific configuration
 	GetProviderConfiguration(ctx context.Context, in *ConfigRequest, opts ...grpc.CallOption) (*ConfigResponse, error)
+	// SetProviderConfiguration sends configuration from bresearch to provider
+	SetProviderConfiguration(ctx context.Context, in *SetConfigRequest, opts ...grpc.CallOption) (*SetConfigResponse, error)
 	// Sync triggers a data sync from external API
 	Sync(ctx context.Context, in *SyncRequest, opts ...grpc.CallOption) (*SyncResponse, error)
 	// Push sends collected data back to bresrch
@@ -66,6 +69,16 @@ func (c *resourceClient) GetProviderConfiguration(ctx context.Context, in *Confi
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ConfigResponse)
 	err := c.cc.Invoke(ctx, Resource_GetProviderConfiguration_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *resourceClient) SetProviderConfiguration(ctx context.Context, in *SetConfigRequest, opts ...grpc.CallOption) (*SetConfigResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SetConfigResponse)
+	err := c.cc.Invoke(ctx, Resource_SetProviderConfiguration_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -112,6 +125,8 @@ type ResourceServer interface {
 	GetSupportedVersions(context.Context, *VersionRequest) (*VersionResponse, error)
 	// GetProviderConfiguration returns provider-specific configuration
 	GetProviderConfiguration(context.Context, *ConfigRequest) (*ConfigResponse, error)
+	// SetProviderConfiguration sends configuration from bresearch to provider
+	SetProviderConfiguration(context.Context, *SetConfigRequest) (*SetConfigResponse, error)
 	// Sync triggers a data sync from external API
 	Sync(context.Context, *SyncRequest) (*SyncResponse, error)
 	// Push sends collected data back to bresrch
@@ -133,6 +148,9 @@ func (UnimplementedResourceServer) GetSupportedVersions(context.Context, *Versio
 }
 func (UnimplementedResourceServer) GetProviderConfiguration(context.Context, *ConfigRequest) (*ConfigResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetProviderConfiguration not implemented")
+}
+func (UnimplementedResourceServer) SetProviderConfiguration(context.Context, *SetConfigRequest) (*SetConfigResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetProviderConfiguration not implemented")
 }
 func (UnimplementedResourceServer) Sync(context.Context, *SyncRequest) (*SyncResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Sync not implemented")
@@ -196,6 +214,24 @@ func _Resource_GetProviderConfiguration_Handler(srv interface{}, ctx context.Con
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ResourceServer).GetProviderConfiguration(ctx, req.(*ConfigRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Resource_SetProviderConfiguration_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetConfigRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ResourceServer).SetProviderConfiguration(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Resource_SetProviderConfiguration_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ResourceServer).SetProviderConfiguration(ctx, req.(*SetConfigRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -268,6 +304,10 @@ var Resource_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetProviderConfiguration",
 			Handler:    _Resource_GetProviderConfiguration_Handler,
+		},
+		{
+			MethodName: "SetProviderConfiguration",
+			Handler:    _Resource_SetProviderConfiguration_Handler,
 		},
 		{
 			MethodName: "Sync",

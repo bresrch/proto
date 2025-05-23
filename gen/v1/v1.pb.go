@@ -135,6 +135,120 @@ func (x *ConfigResponse) GetConfig() []byte {
 	return nil
 }
 
+// SetConfigRequest sends configuration from bresearch to provider
+type SetConfigRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ProviderId    string                 `protobuf:"bytes,1,opt,name=provider_id,json=providerId,proto3" json:"provider_id,omitempty"`
+	Environment   string                 `protobuf:"bytes,2,opt,name=environment,proto3" json:"environment,omitempty"` // e.g., "production", "staging"
+	Config        []byte                 `protobuf:"bytes,3,opt,name=config,proto3" json:"config,omitempty"`           // JSON-encoded provider configuration
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SetConfigRequest) Reset() {
+	*x = SetConfigRequest{}
+	mi := &file_v1_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SetConfigRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SetConfigRequest) ProtoMessage() {}
+
+func (x *SetConfigRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_v1_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SetConfigRequest.ProtoReflect.Descriptor instead.
+func (*SetConfigRequest) Descriptor() ([]byte, []int) {
+	return file_v1_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *SetConfigRequest) GetProviderId() string {
+	if x != nil {
+		return x.ProviderId
+	}
+	return ""
+}
+
+func (x *SetConfigRequest) GetEnvironment() string {
+	if x != nil {
+		return x.Environment
+	}
+	return ""
+}
+
+func (x *SetConfigRequest) GetConfig() []byte {
+	if x != nil {
+		return x.Config
+	}
+	return nil
+}
+
+// SetConfigResponse acknowledges configuration receipt
+type SetConfigResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Error         string                 `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SetConfigResponse) Reset() {
+	*x = SetConfigResponse{}
+	mi := &file_v1_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SetConfigResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SetConfigResponse) ProtoMessage() {}
+
+func (x *SetConfigResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_v1_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SetConfigResponse.ProtoReflect.Descriptor instead.
+func (*SetConfigResponse) Descriptor() ([]byte, []int) {
+	return file_v1_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *SetConfigResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *SetConfigResponse) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
 // SyncRequest triggers a data sync operation
 type SyncRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
@@ -148,7 +262,7 @@ type SyncRequest struct {
 
 func (x *SyncRequest) Reset() {
 	*x = SyncRequest{}
-	mi := &file_v1_proto_msgTypes[2]
+	mi := &file_v1_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -160,7 +274,7 @@ func (x *SyncRequest) String() string {
 func (*SyncRequest) ProtoMessage() {}
 
 func (x *SyncRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_proto_msgTypes[2]
+	mi := &file_v1_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -173,7 +287,7 @@ func (x *SyncRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SyncRequest.ProtoReflect.Descriptor instead.
 func (*SyncRequest) Descriptor() ([]byte, []int) {
-	return file_v1_proto_rawDescGZIP(), []int{2}
+	return file_v1_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *SyncRequest) GetSyncId() string {
@@ -218,7 +332,7 @@ type SyncResponse struct {
 
 func (x *SyncResponse) Reset() {
 	*x = SyncResponse{}
-	mi := &file_v1_proto_msgTypes[3]
+	mi := &file_v1_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -230,7 +344,7 @@ func (x *SyncResponse) String() string {
 func (*SyncResponse) ProtoMessage() {}
 
 func (x *SyncResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_proto_msgTypes[3]
+	mi := &file_v1_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -243,7 +357,7 @@ func (x *SyncResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SyncResponse.ProtoReflect.Descriptor instead.
 func (*SyncResponse) Descriptor() ([]byte, []int) {
-	return file_v1_proto_rawDescGZIP(), []int{3}
+	return file_v1_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *SyncResponse) GetSuccess() bool {
@@ -295,7 +409,7 @@ type SyncMetrics struct {
 
 func (x *SyncMetrics) Reset() {
 	*x = SyncMetrics{}
-	mi := &file_v1_proto_msgTypes[4]
+	mi := &file_v1_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -307,7 +421,7 @@ func (x *SyncMetrics) String() string {
 func (*SyncMetrics) ProtoMessage() {}
 
 func (x *SyncMetrics) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_proto_msgTypes[4]
+	mi := &file_v1_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -320,7 +434,7 @@ func (x *SyncMetrics) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SyncMetrics.ProtoReflect.Descriptor instead.
 func (*SyncMetrics) Descriptor() ([]byte, []int) {
-	return file_v1_proto_rawDescGZIP(), []int{4}
+	return file_v1_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *SyncMetrics) GetTotalApiCalls() int64 {
@@ -370,7 +484,7 @@ type PushRequest struct {
 
 func (x *PushRequest) Reset() {
 	*x = PushRequest{}
-	mi := &file_v1_proto_msgTypes[5]
+	mi := &file_v1_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -382,7 +496,7 @@ func (x *PushRequest) String() string {
 func (*PushRequest) ProtoMessage() {}
 
 func (x *PushRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_proto_msgTypes[5]
+	mi := &file_v1_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -395,7 +509,7 @@ func (x *PushRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PushRequest.ProtoReflect.Descriptor instead.
 func (*PushRequest) Descriptor() ([]byte, []int) {
-	return file_v1_proto_rawDescGZIP(), []int{5}
+	return file_v1_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *PushRequest) GetEntityType() string {
@@ -431,7 +545,7 @@ type PushResponse struct {
 
 func (x *PushResponse) Reset() {
 	*x = PushResponse{}
-	mi := &file_v1_proto_msgTypes[6]
+	mi := &file_v1_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -443,7 +557,7 @@ func (x *PushResponse) String() string {
 func (*PushResponse) ProtoMessage() {}
 
 func (x *PushResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_proto_msgTypes[6]
+	mi := &file_v1_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -456,7 +570,7 @@ func (x *PushResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PushResponse.ProtoReflect.Descriptor instead.
 func (*PushResponse) Descriptor() ([]byte, []int) {
-	return file_v1_proto_rawDescGZIP(), []int{6}
+	return file_v1_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *PushResponse) GetSuccess() bool {
@@ -492,7 +606,7 @@ type MigrateRequest struct {
 
 func (x *MigrateRequest) Reset() {
 	*x = MigrateRequest{}
-	mi := &file_v1_proto_msgTypes[7]
+	mi := &file_v1_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -504,7 +618,7 @@ func (x *MigrateRequest) String() string {
 func (*MigrateRequest) ProtoMessage() {}
 
 func (x *MigrateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_proto_msgTypes[7]
+	mi := &file_v1_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -517,7 +631,7 @@ func (x *MigrateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MigrateRequest.ProtoReflect.Descriptor instead.
 func (*MigrateRequest) Descriptor() ([]byte, []int) {
-	return file_v1_proto_rawDescGZIP(), []int{7}
+	return file_v1_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *MigrateRequest) GetTargetVersion() string {
@@ -554,7 +668,7 @@ type MigrateResponse struct {
 
 func (x *MigrateResponse) Reset() {
 	*x = MigrateResponse{}
-	mi := &file_v1_proto_msgTypes[8]
+	mi := &file_v1_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -566,7 +680,7 @@ func (x *MigrateResponse) String() string {
 func (*MigrateResponse) ProtoMessage() {}
 
 func (x *MigrateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_proto_msgTypes[8]
+	mi := &file_v1_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -579,7 +693,7 @@ func (x *MigrateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MigrateResponse.ProtoReflect.Descriptor instead.
 func (*MigrateResponse) Descriptor() ([]byte, []int) {
-	return file_v1_proto_rawDescGZIP(), []int{8}
+	return file_v1_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *MigrateResponse) GetSuccess() bool {
@@ -623,7 +737,7 @@ type MigrationOperation struct {
 
 func (x *MigrationOperation) Reset() {
 	*x = MigrationOperation{}
-	mi := &file_v1_proto_msgTypes[9]
+	mi := &file_v1_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -635,7 +749,7 @@ func (x *MigrationOperation) String() string {
 func (*MigrationOperation) ProtoMessage() {}
 
 func (x *MigrationOperation) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_proto_msgTypes[9]
+	mi := &file_v1_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -648,7 +762,7 @@ func (x *MigrationOperation) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MigrationOperation.ProtoReflect.Descriptor instead.
 func (*MigrationOperation) Descriptor() ([]byte, []int) {
-	return file_v1_proto_rawDescGZIP(), []int{9}
+	return file_v1_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *MigrationOperation) GetVersion() string {
@@ -688,7 +802,7 @@ type VersionRequest struct {
 
 func (x *VersionRequest) Reset() {
 	*x = VersionRequest{}
-	mi := &file_v1_proto_msgTypes[10]
+	mi := &file_v1_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -700,7 +814,7 @@ func (x *VersionRequest) String() string {
 func (*VersionRequest) ProtoMessage() {}
 
 func (x *VersionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_proto_msgTypes[10]
+	mi := &file_v1_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -713,7 +827,7 @@ func (x *VersionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VersionRequest.ProtoReflect.Descriptor instead.
 func (*VersionRequest) Descriptor() ([]byte, []int) {
-	return file_v1_proto_rawDescGZIP(), []int{10}
+	return file_v1_proto_rawDescGZIP(), []int{12}
 }
 
 // VersionResponse contains information about supported protocol versions
@@ -731,7 +845,7 @@ type VersionResponse struct {
 
 func (x *VersionResponse) Reset() {
 	*x = VersionResponse{}
-	mi := &file_v1_proto_msgTypes[11]
+	mi := &file_v1_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -743,7 +857,7 @@ func (x *VersionResponse) String() string {
 func (*VersionResponse) ProtoMessage() {}
 
 func (x *VersionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_proto_msgTypes[11]
+	mi := &file_v1_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -756,7 +870,7 @@ func (x *VersionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VersionResponse.ProtoReflect.Descriptor instead.
 func (*VersionResponse) Descriptor() ([]byte, []int) {
-	return file_v1_proto_rawDescGZIP(), []int{11}
+	return file_v1_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *VersionResponse) GetSupportedVersions() []string {
@@ -792,7 +906,15 @@ const file_v1_proto_rawDesc = "" +
 	"\x0eConfigResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x14\n" +
 	"\x05error\x18\x02 \x01(\tR\x05error\x12\x16\n" +
-	"\x06config\x18\x03 \x01(\fR\x06config\"\xf2\x01\n" +
+	"\x06config\x18\x03 \x01(\fR\x06config\"m\n" +
+	"\x10SetConfigRequest\x12\x1f\n" +
+	"\vprovider_id\x18\x01 \x01(\tR\n" +
+	"providerId\x12 \n" +
+	"\venvironment\x18\x02 \x01(\tR\venvironment\x12\x16\n" +
+	"\x06config\x18\x03 \x01(\fR\x06config\"C\n" +
+	"\x11SetConfigResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x14\n" +
+	"\x05error\x18\x02 \x01(\tR\x05error\"\xf2\x01\n" +
 	"\vSyncRequest\x12\x17\n" +
 	"\async_id\x18\x01 \x01(\tR\x06syncId\x12\x1f\n" +
 	"\ventity_type\x18\x02 \x01(\tR\n" +
@@ -853,10 +975,11 @@ const file_v1_proto_rawDesc = "" +
 	"\vmin_version\x18\x02 \x01(\tR\n" +
 	"minVersion\x12\x1f\n" +
 	"\vmax_version\x18\x03 \x01(\tR\n" +
-	"maxVersion2\xac\x03\n" +
+	"maxVersion2\x91\x04\n" +
 	"\bResource\x12[\n" +
 	"\x14GetSupportedVersions\x12 .proto.bresrch.v1.VersionRequest\x1a!.proto.bresrch.v1.VersionResponse\x12]\n" +
-	"\x18GetProviderConfiguration\x12\x1f.proto.bresrch.v1.ConfigRequest\x1a .proto.bresrch.v1.ConfigResponse\x12E\n" +
+	"\x18GetProviderConfiguration\x12\x1f.proto.bresrch.v1.ConfigRequest\x1a .proto.bresrch.v1.ConfigResponse\x12c\n" +
+	"\x18SetProviderConfiguration\x12\".proto.bresrch.v1.SetConfigRequest\x1a#.proto.bresrch.v1.SetConfigResponse\x12E\n" +
 	"\x04Sync\x12\x1d.proto.bresrch.v1.SyncRequest\x1a\x1e.proto.bresrch.v1.SyncResponse\x12E\n" +
 	"\x04Push\x12\x1d.proto.bresrch.v1.PushRequest\x1a\x1e.proto.bresrch.v1.PushResponse\x12V\n" +
 	"\x0fMigrateDatabase\x12 .proto.bresrch.v1.MigrateRequest\x1a!.proto.bresrch.v1.MigrateResponseB!Z\x1fgithub.com/bresrch/proto/gen/v1b\x06proto3"
@@ -873,42 +996,46 @@ func file_v1_proto_rawDescGZIP() []byte {
 	return file_v1_proto_rawDescData
 }
 
-var file_v1_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
+var file_v1_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
 var file_v1_proto_goTypes = []any{
 	(*ConfigRequest)(nil),      // 0: proto.bresrch.v1.ConfigRequest
 	(*ConfigResponse)(nil),     // 1: proto.bresrch.v1.ConfigResponse
-	(*SyncRequest)(nil),        // 2: proto.bresrch.v1.SyncRequest
-	(*SyncResponse)(nil),       // 3: proto.bresrch.v1.SyncResponse
-	(*SyncMetrics)(nil),        // 4: proto.bresrch.v1.SyncMetrics
-	(*PushRequest)(nil),        // 5: proto.bresrch.v1.PushRequest
-	(*PushResponse)(nil),       // 6: proto.bresrch.v1.PushResponse
-	(*MigrateRequest)(nil),     // 7: proto.bresrch.v1.MigrateRequest
-	(*MigrateResponse)(nil),    // 8: proto.bresrch.v1.MigrateResponse
-	(*MigrationOperation)(nil), // 9: proto.bresrch.v1.MigrationOperation
-	(*VersionRequest)(nil),     // 10: proto.bresrch.v1.VersionRequest
-	(*VersionResponse)(nil),    // 11: proto.bresrch.v1.VersionResponse
-	nil,                        // 12: proto.bresrch.v1.SyncRequest.OptionsEntry
-	nil,                        // 13: proto.bresrch.v1.SyncMetrics.OperationCountsEntry
-	nil,                        // 14: proto.bresrch.v1.MigrateRequest.MigrationsEntry
+	(*SetConfigRequest)(nil),   // 2: proto.bresrch.v1.SetConfigRequest
+	(*SetConfigResponse)(nil),  // 3: proto.bresrch.v1.SetConfigResponse
+	(*SyncRequest)(nil),        // 4: proto.bresrch.v1.SyncRequest
+	(*SyncResponse)(nil),       // 5: proto.bresrch.v1.SyncResponse
+	(*SyncMetrics)(nil),        // 6: proto.bresrch.v1.SyncMetrics
+	(*PushRequest)(nil),        // 7: proto.bresrch.v1.PushRequest
+	(*PushResponse)(nil),       // 8: proto.bresrch.v1.PushResponse
+	(*MigrateRequest)(nil),     // 9: proto.bresrch.v1.MigrateRequest
+	(*MigrateResponse)(nil),    // 10: proto.bresrch.v1.MigrateResponse
+	(*MigrationOperation)(nil), // 11: proto.bresrch.v1.MigrationOperation
+	(*VersionRequest)(nil),     // 12: proto.bresrch.v1.VersionRequest
+	(*VersionResponse)(nil),    // 13: proto.bresrch.v1.VersionResponse
+	nil,                        // 14: proto.bresrch.v1.SyncRequest.OptionsEntry
+	nil,                        // 15: proto.bresrch.v1.SyncMetrics.OperationCountsEntry
+	nil,                        // 16: proto.bresrch.v1.MigrateRequest.MigrationsEntry
 }
 var file_v1_proto_depIdxs = []int32{
-	12, // 0: proto.bresrch.v1.SyncRequest.options:type_name -> proto.bresrch.v1.SyncRequest.OptionsEntry
-	4,  // 1: proto.bresrch.v1.SyncResponse.metrics:type_name -> proto.bresrch.v1.SyncMetrics
-	13, // 2: proto.bresrch.v1.SyncMetrics.operation_counts:type_name -> proto.bresrch.v1.SyncMetrics.OperationCountsEntry
-	14, // 3: proto.bresrch.v1.MigrateRequest.migrations:type_name -> proto.bresrch.v1.MigrateRequest.MigrationsEntry
-	9,  // 4: proto.bresrch.v1.MigrateResponse.operations:type_name -> proto.bresrch.v1.MigrationOperation
-	10, // 5: proto.bresrch.v1.Resource.GetSupportedVersions:input_type -> proto.bresrch.v1.VersionRequest
+	14, // 0: proto.bresrch.v1.SyncRequest.options:type_name -> proto.bresrch.v1.SyncRequest.OptionsEntry
+	6,  // 1: proto.bresrch.v1.SyncResponse.metrics:type_name -> proto.bresrch.v1.SyncMetrics
+	15, // 2: proto.bresrch.v1.SyncMetrics.operation_counts:type_name -> proto.bresrch.v1.SyncMetrics.OperationCountsEntry
+	16, // 3: proto.bresrch.v1.MigrateRequest.migrations:type_name -> proto.bresrch.v1.MigrateRequest.MigrationsEntry
+	11, // 4: proto.bresrch.v1.MigrateResponse.operations:type_name -> proto.bresrch.v1.MigrationOperation
+	12, // 5: proto.bresrch.v1.Resource.GetSupportedVersions:input_type -> proto.bresrch.v1.VersionRequest
 	0,  // 6: proto.bresrch.v1.Resource.GetProviderConfiguration:input_type -> proto.bresrch.v1.ConfigRequest
-	2,  // 7: proto.bresrch.v1.Resource.Sync:input_type -> proto.bresrch.v1.SyncRequest
-	5,  // 8: proto.bresrch.v1.Resource.Push:input_type -> proto.bresrch.v1.PushRequest
-	7,  // 9: proto.bresrch.v1.Resource.MigrateDatabase:input_type -> proto.bresrch.v1.MigrateRequest
-	11, // 10: proto.bresrch.v1.Resource.GetSupportedVersions:output_type -> proto.bresrch.v1.VersionResponse
-	1,  // 11: proto.bresrch.v1.Resource.GetProviderConfiguration:output_type -> proto.bresrch.v1.ConfigResponse
-	3,  // 12: proto.bresrch.v1.Resource.Sync:output_type -> proto.bresrch.v1.SyncResponse
-	6,  // 13: proto.bresrch.v1.Resource.Push:output_type -> proto.bresrch.v1.PushResponse
-	8,  // 14: proto.bresrch.v1.Resource.MigrateDatabase:output_type -> proto.bresrch.v1.MigrateResponse
-	10, // [10:15] is the sub-list for method output_type
-	5,  // [5:10] is the sub-list for method input_type
+	2,  // 7: proto.bresrch.v1.Resource.SetProviderConfiguration:input_type -> proto.bresrch.v1.SetConfigRequest
+	4,  // 8: proto.bresrch.v1.Resource.Sync:input_type -> proto.bresrch.v1.SyncRequest
+	7,  // 9: proto.bresrch.v1.Resource.Push:input_type -> proto.bresrch.v1.PushRequest
+	9,  // 10: proto.bresrch.v1.Resource.MigrateDatabase:input_type -> proto.bresrch.v1.MigrateRequest
+	13, // 11: proto.bresrch.v1.Resource.GetSupportedVersions:output_type -> proto.bresrch.v1.VersionResponse
+	1,  // 12: proto.bresrch.v1.Resource.GetProviderConfiguration:output_type -> proto.bresrch.v1.ConfigResponse
+	3,  // 13: proto.bresrch.v1.Resource.SetProviderConfiguration:output_type -> proto.bresrch.v1.SetConfigResponse
+	5,  // 14: proto.bresrch.v1.Resource.Sync:output_type -> proto.bresrch.v1.SyncResponse
+	8,  // 15: proto.bresrch.v1.Resource.Push:output_type -> proto.bresrch.v1.PushResponse
+	10, // 16: proto.bresrch.v1.Resource.MigrateDatabase:output_type -> proto.bresrch.v1.MigrateResponse
+	11, // [11:17] is the sub-list for method output_type
+	5,  // [5:11] is the sub-list for method input_type
 	5,  // [5:5] is the sub-list for extension type_name
 	5,  // [5:5] is the sub-list for extension extendee
 	0,  // [0:5] is the sub-list for field type_name
@@ -925,7 +1052,7 @@ func file_v1_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_v1_proto_rawDesc), len(file_v1_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   15,
+			NumMessages:   17,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

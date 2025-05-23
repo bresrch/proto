@@ -1,5 +1,7 @@
 .PHONY: setup clean v1
 
+all: v1
+
 setup:
 	go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
 	go install google.golang.org/grpc/cmd/protoc-gen-go-protobuf@latest

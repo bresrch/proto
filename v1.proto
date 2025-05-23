@@ -11,6 +11,9 @@ service Resource {
   // GetProviderConfiguration returns provider-specific configuration
   rpc GetProviderConfiguration(ConfigRequest) returns (ConfigResponse);
   
+  // SetProviderConfiguration sends configuration from bresearch to provider
+  rpc SetProviderConfiguration(SetConfigRequest) returns (SetConfigResponse);
+  
   // Sync triggers a data sync from external API
   rpc Sync(SyncRequest) returns (SyncResponse);
   
@@ -32,6 +35,19 @@ message ConfigResponse {
   bool success = 1;
   string error = 2;
   bytes config = 3;  // JSON-encoded provider configuration
+}
+
+// SetConfigRequest sends configuration from bresearch to provider
+message SetConfigRequest {
+  string provider_id = 1;
+  string environment = 2;  // e.g., "production", "staging"
+  bytes config = 3;  // JSON-encoded provider configuration
+}
+
+// SetConfigResponse acknowledges configuration receipt
+message SetConfigResponse {
+  bool success = 1;
+  string error = 2;
 }
 
 // SyncRequest triggers a data sync operation
