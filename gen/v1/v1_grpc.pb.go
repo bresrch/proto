@@ -25,6 +25,7 @@ const (
 	Resource_Sync_FullMethodName                     = "/proto.bresrch.v1.Resource/Sync"
 	Resource_Push_FullMethodName                     = "/proto.bresrch.v1.Resource/Push"
 	Resource_MigrateDatabase_FullMethodName          = "/proto.bresrch.v1.Resource/MigrateDatabase"
+	Resource_RegisterMigrations_FullMethodName       = "/proto.bresrch.v1.Resource/RegisterMigrations"
 )
 
 // ResourceClient is the client API for Resource service.
@@ -45,6 +46,8 @@ type ResourceClient interface {
 	Push(ctx context.Context, in *PushRequest, opts ...grpc.CallOption) (*PushResponse, error)
 	// MigrateDatabase performs database migrations
 	MigrateDatabase(ctx context.Context, in *MigrateRequest, opts ...grpc.CallOption) (*MigrateResponse, error)
+	// RegisterMigrations allows providers to register their migrations with bresearch
+	RegisterMigrations(ctx context.Context, in *RegisterMigrationsRequest, opts ...grpc.CallOption) (*RegisterMigrationsResponse, error)
 }
 
 type resourceClient struct {
@@ -115,6 +118,16 @@ func (c *resourceClient) MigrateDatabase(ctx context.Context, in *MigrateRequest
 	return out, nil
 }
 
+func (c *resourceClient) RegisterMigrations(ctx context.Context, in *RegisterMigrationsRequest, opts ...grpc.CallOption) (*RegisterMigrationsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RegisterMigrationsResponse)
+	err := c.cc.Invoke(ctx, Resource_RegisterMigrations_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ResourceServer is the server API for Resource service.
 // All implementations must embed UnimplementedResourceServer
 // for forward compatibility.
@@ -133,6 +146,8 @@ type ResourceServer interface {
 	Push(context.Context, *PushRequest) (*PushResponse, error)
 	// MigrateDatabase performs database migrations
 	MigrateDatabase(context.Context, *MigrateRequest) (*MigrateResponse, error)
+	// RegisterMigrations allows providers to register their migrations with bresearch
+	RegisterMigrations(context.Context, *RegisterMigrationsRequest) (*RegisterMigrationsResponse, error)
 	mustEmbedUnimplementedResourceServer()
 }
 
@@ -160,6 +175,9 @@ func (UnimplementedResourceServer) Push(context.Context, *PushRequest) (*PushRes
 }
 func (UnimplementedResourceServer) MigrateDatabase(context.Context, *MigrateRequest) (*MigrateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MigrateDatabase not implemented")
+}
+func (UnimplementedResourceServer) RegisterMigrations(context.Context, *RegisterMigrationsRequest) (*RegisterMigrationsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RegisterMigrations not implemented")
 }
 func (UnimplementedResourceServer) mustEmbedUnimplementedResourceServer() {}
 func (UnimplementedResourceServer) testEmbeddedByValue()                  {}
@@ -290,6 +308,24 @@ func _Resource_MigrateDatabase_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Resource_RegisterMigrations_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RegisterMigrationsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ResourceServer).RegisterMigrations(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Resource_RegisterMigrations_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ResourceServer).RegisterMigrations(ctx, req.(*RegisterMigrationsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Resource_ServiceDesc is the grpc.ServiceDesc for Resource service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -320,6 +356,10 @@ var Resource_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "MigrateDatabase",
 			Handler:    _Resource_MigrateDatabase_Handler,
+		},
+		{
+			MethodName: "RegisterMigrations",
+			Handler:    _Resource_RegisterMigrations_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

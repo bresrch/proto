@@ -793,6 +793,128 @@ func (x *MigrationOperation) GetTimestamp() int64 {
 	return 0
 }
 
+// RegisterMigrationsRequest sends provider migrations to bresearch
+type RegisterMigrationsRequest struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	ProviderId     string                 `protobuf:"bytes,1,opt,name=provider_id,json=providerId,proto3" json:"provider_id,omitempty"`
+	CurrentVersion string                 `protobuf:"bytes,2,opt,name=current_version,json=currentVersion,proto3" json:"current_version,omitempty"`
+	Migrations     map[string][]byte      `protobuf:"bytes,3,rep,name=migrations,proto3" json:"migrations,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"` // version -> migration SQL
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *RegisterMigrationsRequest) Reset() {
+	*x = RegisterMigrationsRequest{}
+	mi := &file_v1_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RegisterMigrationsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RegisterMigrationsRequest) ProtoMessage() {}
+
+func (x *RegisterMigrationsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_v1_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RegisterMigrationsRequest.ProtoReflect.Descriptor instead.
+func (*RegisterMigrationsRequest) Descriptor() ([]byte, []int) {
+	return file_v1_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *RegisterMigrationsRequest) GetProviderId() string {
+	if x != nil {
+		return x.ProviderId
+	}
+	return ""
+}
+
+func (x *RegisterMigrationsRequest) GetCurrentVersion() string {
+	if x != nil {
+		return x.CurrentVersion
+	}
+	return ""
+}
+
+func (x *RegisterMigrationsRequest) GetMigrations() map[string][]byte {
+	if x != nil {
+		return x.Migrations
+	}
+	return nil
+}
+
+// RegisterMigrationsResponse acknowledges migration registration
+type RegisterMigrationsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Error         string                 `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	TargetVersion string                 `protobuf:"bytes,3,opt,name=target_version,json=targetVersion,proto3" json:"target_version,omitempty"` // Version bresearch wants provider to migrate to
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RegisterMigrationsResponse) Reset() {
+	*x = RegisterMigrationsResponse{}
+	mi := &file_v1_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RegisterMigrationsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RegisterMigrationsResponse) ProtoMessage() {}
+
+func (x *RegisterMigrationsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_v1_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RegisterMigrationsResponse.ProtoReflect.Descriptor instead.
+func (*RegisterMigrationsResponse) Descriptor() ([]byte, []int) {
+	return file_v1_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *RegisterMigrationsResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *RegisterMigrationsResponse) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
+func (x *RegisterMigrationsResponse) GetTargetVersion() string {
+	if x != nil {
+		return x.TargetVersion
+	}
+	return ""
+}
+
 // VersionRequest is sent to query supported protocol versions
 type VersionRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -802,7 +924,7 @@ type VersionRequest struct {
 
 func (x *VersionRequest) Reset() {
 	*x = VersionRequest{}
-	mi := &file_v1_proto_msgTypes[12]
+	mi := &file_v1_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -814,7 +936,7 @@ func (x *VersionRequest) String() string {
 func (*VersionRequest) ProtoMessage() {}
 
 func (x *VersionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_proto_msgTypes[12]
+	mi := &file_v1_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -827,7 +949,7 @@ func (x *VersionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VersionRequest.ProtoReflect.Descriptor instead.
 func (*VersionRequest) Descriptor() ([]byte, []int) {
-	return file_v1_proto_rawDescGZIP(), []int{12}
+	return file_v1_proto_rawDescGZIP(), []int{14}
 }
 
 // VersionResponse contains information about supported protocol versions
@@ -845,7 +967,7 @@ type VersionResponse struct {
 
 func (x *VersionResponse) Reset() {
 	*x = VersionResponse{}
-	mi := &file_v1_proto_msgTypes[13]
+	mi := &file_v1_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -857,7 +979,7 @@ func (x *VersionResponse) String() string {
 func (*VersionResponse) ProtoMessage() {}
 
 func (x *VersionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_proto_msgTypes[13]
+	mi := &file_v1_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -870,7 +992,7 @@ func (x *VersionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VersionResponse.ProtoReflect.Descriptor instead.
 func (*VersionResponse) Descriptor() ([]byte, []int) {
-	return file_v1_proto_rawDescGZIP(), []int{13}
+	return file_v1_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *VersionResponse) GetSupportedVersions() []string {
@@ -968,21 +1090,36 @@ const file_v1_proto_rawDesc = "" +
 	"\aversion\x18\x01 \x01(\tR\aversion\x12 \n" +
 	"\vdescription\x18\x02 \x01(\tR\vdescription\x12\x18\n" +
 	"\aapplied\x18\x03 \x01(\bR\aapplied\x12\x1c\n" +
-	"\ttimestamp\x18\x04 \x01(\x03R\ttimestamp\"\x10\n" +
+	"\ttimestamp\x18\x04 \x01(\x03R\ttimestamp\"\x81\x02\n" +
+	"\x19RegisterMigrationsRequest\x12\x1f\n" +
+	"\vprovider_id\x18\x01 \x01(\tR\n" +
+	"providerId\x12'\n" +
+	"\x0fcurrent_version\x18\x02 \x01(\tR\x0ecurrentVersion\x12[\n" +
+	"\n" +
+	"migrations\x18\x03 \x03(\v2;.proto.bresrch.v1.RegisterMigrationsRequest.MigrationsEntryR\n" +
+	"migrations\x1a=\n" +
+	"\x0fMigrationsEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\fR\x05value:\x028\x01\"s\n" +
+	"\x1aRegisterMigrationsResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x14\n" +
+	"\x05error\x18\x02 \x01(\tR\x05error\x12%\n" +
+	"\x0etarget_version\x18\x03 \x01(\tR\rtargetVersion\"\x10\n" +
 	"\x0eVersionRequest\"\x82\x01\n" +
 	"\x0fVersionResponse\x12-\n" +
 	"\x12supported_versions\x18\x01 \x03(\tR\x11supportedVersions\x12\x1f\n" +
 	"\vmin_version\x18\x02 \x01(\tR\n" +
 	"minVersion\x12\x1f\n" +
 	"\vmax_version\x18\x03 \x01(\tR\n" +
-	"maxVersion2\x91\x04\n" +
+	"maxVersion2\x82\x05\n" +
 	"\bResource\x12[\n" +
 	"\x14GetSupportedVersions\x12 .proto.bresrch.v1.VersionRequest\x1a!.proto.bresrch.v1.VersionResponse\x12]\n" +
 	"\x18GetProviderConfiguration\x12\x1f.proto.bresrch.v1.ConfigRequest\x1a .proto.bresrch.v1.ConfigResponse\x12c\n" +
 	"\x18SetProviderConfiguration\x12\".proto.bresrch.v1.SetConfigRequest\x1a#.proto.bresrch.v1.SetConfigResponse\x12E\n" +
 	"\x04Sync\x12\x1d.proto.bresrch.v1.SyncRequest\x1a\x1e.proto.bresrch.v1.SyncResponse\x12E\n" +
 	"\x04Push\x12\x1d.proto.bresrch.v1.PushRequest\x1a\x1e.proto.bresrch.v1.PushResponse\x12V\n" +
-	"\x0fMigrateDatabase\x12 .proto.bresrch.v1.MigrateRequest\x1a!.proto.bresrch.v1.MigrateResponseB!Z\x1fgithub.com/bresrch/proto/gen/v1b\x06proto3"
+	"\x0fMigrateDatabase\x12 .proto.bresrch.v1.MigrateRequest\x1a!.proto.bresrch.v1.MigrateResponse\x12o\n" +
+	"\x12RegisterMigrations\x12+.proto.bresrch.v1.RegisterMigrationsRequest\x1a,.proto.bresrch.v1.RegisterMigrationsResponseB!Z\x1fgithub.com/bresrch/proto/gen/v1b\x06proto3"
 
 var (
 	file_v1_proto_rawDescOnce sync.Once
@@ -996,49 +1133,55 @@ func file_v1_proto_rawDescGZIP() []byte {
 	return file_v1_proto_rawDescData
 }
 
-var file_v1_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
+var file_v1_proto_msgTypes = make([]protoimpl.MessageInfo, 20)
 var file_v1_proto_goTypes = []any{
-	(*ConfigRequest)(nil),      // 0: proto.bresrch.v1.ConfigRequest
-	(*ConfigResponse)(nil),     // 1: proto.bresrch.v1.ConfigResponse
-	(*SetConfigRequest)(nil),   // 2: proto.bresrch.v1.SetConfigRequest
-	(*SetConfigResponse)(nil),  // 3: proto.bresrch.v1.SetConfigResponse
-	(*SyncRequest)(nil),        // 4: proto.bresrch.v1.SyncRequest
-	(*SyncResponse)(nil),       // 5: proto.bresrch.v1.SyncResponse
-	(*SyncMetrics)(nil),        // 6: proto.bresrch.v1.SyncMetrics
-	(*PushRequest)(nil),        // 7: proto.bresrch.v1.PushRequest
-	(*PushResponse)(nil),       // 8: proto.bresrch.v1.PushResponse
-	(*MigrateRequest)(nil),     // 9: proto.bresrch.v1.MigrateRequest
-	(*MigrateResponse)(nil),    // 10: proto.bresrch.v1.MigrateResponse
-	(*MigrationOperation)(nil), // 11: proto.bresrch.v1.MigrationOperation
-	(*VersionRequest)(nil),     // 12: proto.bresrch.v1.VersionRequest
-	(*VersionResponse)(nil),    // 13: proto.bresrch.v1.VersionResponse
-	nil,                        // 14: proto.bresrch.v1.SyncRequest.OptionsEntry
-	nil,                        // 15: proto.bresrch.v1.SyncMetrics.OperationCountsEntry
-	nil,                        // 16: proto.bresrch.v1.MigrateRequest.MigrationsEntry
+	(*ConfigRequest)(nil),              // 0: proto.bresrch.v1.ConfigRequest
+	(*ConfigResponse)(nil),             // 1: proto.bresrch.v1.ConfigResponse
+	(*SetConfigRequest)(nil),           // 2: proto.bresrch.v1.SetConfigRequest
+	(*SetConfigResponse)(nil),          // 3: proto.bresrch.v1.SetConfigResponse
+	(*SyncRequest)(nil),                // 4: proto.bresrch.v1.SyncRequest
+	(*SyncResponse)(nil),               // 5: proto.bresrch.v1.SyncResponse
+	(*SyncMetrics)(nil),                // 6: proto.bresrch.v1.SyncMetrics
+	(*PushRequest)(nil),                // 7: proto.bresrch.v1.PushRequest
+	(*PushResponse)(nil),               // 8: proto.bresrch.v1.PushResponse
+	(*MigrateRequest)(nil),             // 9: proto.bresrch.v1.MigrateRequest
+	(*MigrateResponse)(nil),            // 10: proto.bresrch.v1.MigrateResponse
+	(*MigrationOperation)(nil),         // 11: proto.bresrch.v1.MigrationOperation
+	(*RegisterMigrationsRequest)(nil),  // 12: proto.bresrch.v1.RegisterMigrationsRequest
+	(*RegisterMigrationsResponse)(nil), // 13: proto.bresrch.v1.RegisterMigrationsResponse
+	(*VersionRequest)(nil),             // 14: proto.bresrch.v1.VersionRequest
+	(*VersionResponse)(nil),            // 15: proto.bresrch.v1.VersionResponse
+	nil,                                // 16: proto.bresrch.v1.SyncRequest.OptionsEntry
+	nil,                                // 17: proto.bresrch.v1.SyncMetrics.OperationCountsEntry
+	nil,                                // 18: proto.bresrch.v1.MigrateRequest.MigrationsEntry
+	nil,                                // 19: proto.bresrch.v1.RegisterMigrationsRequest.MigrationsEntry
 }
 var file_v1_proto_depIdxs = []int32{
-	14, // 0: proto.bresrch.v1.SyncRequest.options:type_name -> proto.bresrch.v1.SyncRequest.OptionsEntry
+	16, // 0: proto.bresrch.v1.SyncRequest.options:type_name -> proto.bresrch.v1.SyncRequest.OptionsEntry
 	6,  // 1: proto.bresrch.v1.SyncResponse.metrics:type_name -> proto.bresrch.v1.SyncMetrics
-	15, // 2: proto.bresrch.v1.SyncMetrics.operation_counts:type_name -> proto.bresrch.v1.SyncMetrics.OperationCountsEntry
-	16, // 3: proto.bresrch.v1.MigrateRequest.migrations:type_name -> proto.bresrch.v1.MigrateRequest.MigrationsEntry
+	17, // 2: proto.bresrch.v1.SyncMetrics.operation_counts:type_name -> proto.bresrch.v1.SyncMetrics.OperationCountsEntry
+	18, // 3: proto.bresrch.v1.MigrateRequest.migrations:type_name -> proto.bresrch.v1.MigrateRequest.MigrationsEntry
 	11, // 4: proto.bresrch.v1.MigrateResponse.operations:type_name -> proto.bresrch.v1.MigrationOperation
-	12, // 5: proto.bresrch.v1.Resource.GetSupportedVersions:input_type -> proto.bresrch.v1.VersionRequest
-	0,  // 6: proto.bresrch.v1.Resource.GetProviderConfiguration:input_type -> proto.bresrch.v1.ConfigRequest
-	2,  // 7: proto.bresrch.v1.Resource.SetProviderConfiguration:input_type -> proto.bresrch.v1.SetConfigRequest
-	4,  // 8: proto.bresrch.v1.Resource.Sync:input_type -> proto.bresrch.v1.SyncRequest
-	7,  // 9: proto.bresrch.v1.Resource.Push:input_type -> proto.bresrch.v1.PushRequest
-	9,  // 10: proto.bresrch.v1.Resource.MigrateDatabase:input_type -> proto.bresrch.v1.MigrateRequest
-	13, // 11: proto.bresrch.v1.Resource.GetSupportedVersions:output_type -> proto.bresrch.v1.VersionResponse
-	1,  // 12: proto.bresrch.v1.Resource.GetProviderConfiguration:output_type -> proto.bresrch.v1.ConfigResponse
-	3,  // 13: proto.bresrch.v1.Resource.SetProviderConfiguration:output_type -> proto.bresrch.v1.SetConfigResponse
-	5,  // 14: proto.bresrch.v1.Resource.Sync:output_type -> proto.bresrch.v1.SyncResponse
-	8,  // 15: proto.bresrch.v1.Resource.Push:output_type -> proto.bresrch.v1.PushResponse
-	10, // 16: proto.bresrch.v1.Resource.MigrateDatabase:output_type -> proto.bresrch.v1.MigrateResponse
-	11, // [11:17] is the sub-list for method output_type
-	5,  // [5:11] is the sub-list for method input_type
-	5,  // [5:5] is the sub-list for extension type_name
-	5,  // [5:5] is the sub-list for extension extendee
-	0,  // [0:5] is the sub-list for field type_name
+	19, // 5: proto.bresrch.v1.RegisterMigrationsRequest.migrations:type_name -> proto.bresrch.v1.RegisterMigrationsRequest.MigrationsEntry
+	14, // 6: proto.bresrch.v1.Resource.GetSupportedVersions:input_type -> proto.bresrch.v1.VersionRequest
+	0,  // 7: proto.bresrch.v1.Resource.GetProviderConfiguration:input_type -> proto.bresrch.v1.ConfigRequest
+	2,  // 8: proto.bresrch.v1.Resource.SetProviderConfiguration:input_type -> proto.bresrch.v1.SetConfigRequest
+	4,  // 9: proto.bresrch.v1.Resource.Sync:input_type -> proto.bresrch.v1.SyncRequest
+	7,  // 10: proto.bresrch.v1.Resource.Push:input_type -> proto.bresrch.v1.PushRequest
+	9,  // 11: proto.bresrch.v1.Resource.MigrateDatabase:input_type -> proto.bresrch.v1.MigrateRequest
+	12, // 12: proto.bresrch.v1.Resource.RegisterMigrations:input_type -> proto.bresrch.v1.RegisterMigrationsRequest
+	15, // 13: proto.bresrch.v1.Resource.GetSupportedVersions:output_type -> proto.bresrch.v1.VersionResponse
+	1,  // 14: proto.bresrch.v1.Resource.GetProviderConfiguration:output_type -> proto.bresrch.v1.ConfigResponse
+	3,  // 15: proto.bresrch.v1.Resource.SetProviderConfiguration:output_type -> proto.bresrch.v1.SetConfigResponse
+	5,  // 16: proto.bresrch.v1.Resource.Sync:output_type -> proto.bresrch.v1.SyncResponse
+	8,  // 17: proto.bresrch.v1.Resource.Push:output_type -> proto.bresrch.v1.PushResponse
+	10, // 18: proto.bresrch.v1.Resource.MigrateDatabase:output_type -> proto.bresrch.v1.MigrateResponse
+	13, // 19: proto.bresrch.v1.Resource.RegisterMigrations:output_type -> proto.bresrch.v1.RegisterMigrationsResponse
+	13, // [13:20] is the sub-list for method output_type
+	6,  // [6:13] is the sub-list for method input_type
+	6,  // [6:6] is the sub-list for extension type_name
+	6,  // [6:6] is the sub-list for extension extendee
+	0,  // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_v1_proto_init() }
@@ -1052,7 +1195,7 @@ func file_v1_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_v1_proto_rawDesc), len(file_v1_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   17,
+			NumMessages:   20,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

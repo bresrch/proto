@@ -22,6 +22,9 @@ service Resource {
   
   // MigrateDatabase performs database migrations
   rpc MigrateDatabase(MigrateRequest) returns (MigrateResponse);
+  
+  // RegisterMigrations allows providers to register their migrations with bresearch
+  rpc RegisterMigrations(RegisterMigrationsRequest) returns (RegisterMigrationsResponse);
 }
 
 // ConfigRequest requests provider configuration
@@ -111,6 +114,20 @@ message MigrationOperation {
   string description = 2;
   bool applied = 3;
   int64 timestamp = 4;
+}
+
+// RegisterMigrationsRequest sends provider migrations to bresearch
+message RegisterMigrationsRequest {
+  string provider_id = 1;
+  string current_version = 2;
+  map<string, bytes> migrations = 3; // version -> migration SQL
+}
+
+// RegisterMigrationsResponse acknowledges migration registration
+message RegisterMigrationsResponse {
+  bool success = 1;
+  string error = 2;
+  string target_version = 3; // Version bresearch wants provider to migrate to
 }
 
 // VersionRequest is sent to query supported protocol versions
