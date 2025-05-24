@@ -7,6 +7,9 @@ option go_package = "github.com/bresrch/proto/gen/v1";
 service Resource {
   // Basic operations
   rpc GetSupportedVersions(VersionRequest) returns (VersionResponse);
+  
+  // Ping tests connectivity between bresearch and provider
+  rpc Ping(PingRequest) returns (PingResponse);
     
   // GetProviderConfiguration returns provider-specific configuration
   rpc GetProviderConfiguration(ConfigRequest) returns (ConfigResponse);
@@ -143,4 +146,18 @@ message VersionResponse {
   
   // Maximum supported version (e.g. "2.0")
   string max_version = 3;
+}
+
+// PingRequest tests connectivity
+message PingRequest {
+  string message = 1;
+  int64 timestamp = 2;
+}
+
+// PingResponse acknowledges ping
+message PingResponse {
+  bool success = 1;
+  string message = 2;
+  int64 timestamp = 3;
+  int64 latency_ms = 4;
 }

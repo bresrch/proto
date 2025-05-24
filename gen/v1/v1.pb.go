@@ -1016,6 +1016,128 @@ func (x *VersionResponse) GetMaxVersion() string {
 	return ""
 }
 
+// PingRequest tests connectivity
+type PingRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Message       string                 `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	Timestamp     int64                  `protobuf:"varint,2,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PingRequest) Reset() {
+	*x = PingRequest{}
+	mi := &file_v1_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PingRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PingRequest) ProtoMessage() {}
+
+func (x *PingRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_v1_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PingRequest.ProtoReflect.Descriptor instead.
+func (*PingRequest) Descriptor() ([]byte, []int) {
+	return file_v1_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *PingRequest) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *PingRequest) GetTimestamp() int64 {
+	if x != nil {
+		return x.Timestamp
+	}
+	return 0
+}
+
+// PingResponse acknowledges ping
+type PingResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	Timestamp     int64                  `protobuf:"varint,3,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
+	LatencyMs     int64                  `protobuf:"varint,4,opt,name=latency_ms,json=latencyMs,proto3" json:"latency_ms,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PingResponse) Reset() {
+	*x = PingResponse{}
+	mi := &file_v1_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PingResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PingResponse) ProtoMessage() {}
+
+func (x *PingResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_v1_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PingResponse.ProtoReflect.Descriptor instead.
+func (*PingResponse) Descriptor() ([]byte, []int) {
+	return file_v1_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *PingResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *PingResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *PingResponse) GetTimestamp() int64 {
+	if x != nil {
+		return x.Timestamp
+	}
+	return 0
+}
+
+func (x *PingResponse) GetLatencyMs() int64 {
+	if x != nil {
+		return x.LatencyMs
+	}
+	return 0
+}
+
 var File_v1_proto protoreflect.FileDescriptor
 
 const file_v1_proto_rawDesc = "" +
@@ -1111,9 +1233,19 @@ const file_v1_proto_rawDesc = "" +
 	"\vmin_version\x18\x02 \x01(\tR\n" +
 	"minVersion\x12\x1f\n" +
 	"\vmax_version\x18\x03 \x01(\tR\n" +
-	"maxVersion2\x82\x05\n" +
+	"maxVersion\"E\n" +
+	"\vPingRequest\x12\x18\n" +
+	"\amessage\x18\x01 \x01(\tR\amessage\x12\x1c\n" +
+	"\ttimestamp\x18\x02 \x01(\x03R\ttimestamp\"\x7f\n" +
+	"\fPingResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x12\x1c\n" +
+	"\ttimestamp\x18\x03 \x01(\x03R\ttimestamp\x12\x1d\n" +
+	"\n" +
+	"latency_ms\x18\x04 \x01(\x03R\tlatencyMs2\xc9\x05\n" +
 	"\bResource\x12[\n" +
-	"\x14GetSupportedVersions\x12 .proto.bresrch.v1.VersionRequest\x1a!.proto.bresrch.v1.VersionResponse\x12]\n" +
+	"\x14GetSupportedVersions\x12 .proto.bresrch.v1.VersionRequest\x1a!.proto.bresrch.v1.VersionResponse\x12E\n" +
+	"\x04Ping\x12\x1d.proto.bresrch.v1.PingRequest\x1a\x1e.proto.bresrch.v1.PingResponse\x12]\n" +
 	"\x18GetProviderConfiguration\x12\x1f.proto.bresrch.v1.ConfigRequest\x1a .proto.bresrch.v1.ConfigResponse\x12c\n" +
 	"\x18SetProviderConfiguration\x12\".proto.bresrch.v1.SetConfigRequest\x1a#.proto.bresrch.v1.SetConfigResponse\x12E\n" +
 	"\x04Sync\x12\x1d.proto.bresrch.v1.SyncRequest\x1a\x1e.proto.bresrch.v1.SyncResponse\x12E\n" +
@@ -1133,7 +1265,7 @@ func file_v1_proto_rawDescGZIP() []byte {
 	return file_v1_proto_rawDescData
 }
 
-var file_v1_proto_msgTypes = make([]protoimpl.MessageInfo, 20)
+var file_v1_proto_msgTypes = make([]protoimpl.MessageInfo, 22)
 var file_v1_proto_goTypes = []any{
 	(*ConfigRequest)(nil),              // 0: proto.bresrch.v1.ConfigRequest
 	(*ConfigResponse)(nil),             // 1: proto.bresrch.v1.ConfigResponse
@@ -1151,34 +1283,38 @@ var file_v1_proto_goTypes = []any{
 	(*RegisterMigrationsResponse)(nil), // 13: proto.bresrch.v1.RegisterMigrationsResponse
 	(*VersionRequest)(nil),             // 14: proto.bresrch.v1.VersionRequest
 	(*VersionResponse)(nil),            // 15: proto.bresrch.v1.VersionResponse
-	nil,                                // 16: proto.bresrch.v1.SyncRequest.OptionsEntry
-	nil,                                // 17: proto.bresrch.v1.SyncMetrics.OperationCountsEntry
-	nil,                                // 18: proto.bresrch.v1.MigrateRequest.MigrationsEntry
-	nil,                                // 19: proto.bresrch.v1.RegisterMigrationsRequest.MigrationsEntry
+	(*PingRequest)(nil),                // 16: proto.bresrch.v1.PingRequest
+	(*PingResponse)(nil),               // 17: proto.bresrch.v1.PingResponse
+	nil,                                // 18: proto.bresrch.v1.SyncRequest.OptionsEntry
+	nil,                                // 19: proto.bresrch.v1.SyncMetrics.OperationCountsEntry
+	nil,                                // 20: proto.bresrch.v1.MigrateRequest.MigrationsEntry
+	nil,                                // 21: proto.bresrch.v1.RegisterMigrationsRequest.MigrationsEntry
 }
 var file_v1_proto_depIdxs = []int32{
-	16, // 0: proto.bresrch.v1.SyncRequest.options:type_name -> proto.bresrch.v1.SyncRequest.OptionsEntry
+	18, // 0: proto.bresrch.v1.SyncRequest.options:type_name -> proto.bresrch.v1.SyncRequest.OptionsEntry
 	6,  // 1: proto.bresrch.v1.SyncResponse.metrics:type_name -> proto.bresrch.v1.SyncMetrics
-	17, // 2: proto.bresrch.v1.SyncMetrics.operation_counts:type_name -> proto.bresrch.v1.SyncMetrics.OperationCountsEntry
-	18, // 3: proto.bresrch.v1.MigrateRequest.migrations:type_name -> proto.bresrch.v1.MigrateRequest.MigrationsEntry
+	19, // 2: proto.bresrch.v1.SyncMetrics.operation_counts:type_name -> proto.bresrch.v1.SyncMetrics.OperationCountsEntry
+	20, // 3: proto.bresrch.v1.MigrateRequest.migrations:type_name -> proto.bresrch.v1.MigrateRequest.MigrationsEntry
 	11, // 4: proto.bresrch.v1.MigrateResponse.operations:type_name -> proto.bresrch.v1.MigrationOperation
-	19, // 5: proto.bresrch.v1.RegisterMigrationsRequest.migrations:type_name -> proto.bresrch.v1.RegisterMigrationsRequest.MigrationsEntry
+	21, // 5: proto.bresrch.v1.RegisterMigrationsRequest.migrations:type_name -> proto.bresrch.v1.RegisterMigrationsRequest.MigrationsEntry
 	14, // 6: proto.bresrch.v1.Resource.GetSupportedVersions:input_type -> proto.bresrch.v1.VersionRequest
-	0,  // 7: proto.bresrch.v1.Resource.GetProviderConfiguration:input_type -> proto.bresrch.v1.ConfigRequest
-	2,  // 8: proto.bresrch.v1.Resource.SetProviderConfiguration:input_type -> proto.bresrch.v1.SetConfigRequest
-	4,  // 9: proto.bresrch.v1.Resource.Sync:input_type -> proto.bresrch.v1.SyncRequest
-	7,  // 10: proto.bresrch.v1.Resource.Push:input_type -> proto.bresrch.v1.PushRequest
-	9,  // 11: proto.bresrch.v1.Resource.MigrateDatabase:input_type -> proto.bresrch.v1.MigrateRequest
-	12, // 12: proto.bresrch.v1.Resource.RegisterMigrations:input_type -> proto.bresrch.v1.RegisterMigrationsRequest
-	15, // 13: proto.bresrch.v1.Resource.GetSupportedVersions:output_type -> proto.bresrch.v1.VersionResponse
-	1,  // 14: proto.bresrch.v1.Resource.GetProviderConfiguration:output_type -> proto.bresrch.v1.ConfigResponse
-	3,  // 15: proto.bresrch.v1.Resource.SetProviderConfiguration:output_type -> proto.bresrch.v1.SetConfigResponse
-	5,  // 16: proto.bresrch.v1.Resource.Sync:output_type -> proto.bresrch.v1.SyncResponse
-	8,  // 17: proto.bresrch.v1.Resource.Push:output_type -> proto.bresrch.v1.PushResponse
-	10, // 18: proto.bresrch.v1.Resource.MigrateDatabase:output_type -> proto.bresrch.v1.MigrateResponse
-	13, // 19: proto.bresrch.v1.Resource.RegisterMigrations:output_type -> proto.bresrch.v1.RegisterMigrationsResponse
-	13, // [13:20] is the sub-list for method output_type
-	6,  // [6:13] is the sub-list for method input_type
+	16, // 7: proto.bresrch.v1.Resource.Ping:input_type -> proto.bresrch.v1.PingRequest
+	0,  // 8: proto.bresrch.v1.Resource.GetProviderConfiguration:input_type -> proto.bresrch.v1.ConfigRequest
+	2,  // 9: proto.bresrch.v1.Resource.SetProviderConfiguration:input_type -> proto.bresrch.v1.SetConfigRequest
+	4,  // 10: proto.bresrch.v1.Resource.Sync:input_type -> proto.bresrch.v1.SyncRequest
+	7,  // 11: proto.bresrch.v1.Resource.Push:input_type -> proto.bresrch.v1.PushRequest
+	9,  // 12: proto.bresrch.v1.Resource.MigrateDatabase:input_type -> proto.bresrch.v1.MigrateRequest
+	12, // 13: proto.bresrch.v1.Resource.RegisterMigrations:input_type -> proto.bresrch.v1.RegisterMigrationsRequest
+	15, // 14: proto.bresrch.v1.Resource.GetSupportedVersions:output_type -> proto.bresrch.v1.VersionResponse
+	17, // 15: proto.bresrch.v1.Resource.Ping:output_type -> proto.bresrch.v1.PingResponse
+	1,  // 16: proto.bresrch.v1.Resource.GetProviderConfiguration:output_type -> proto.bresrch.v1.ConfigResponse
+	3,  // 17: proto.bresrch.v1.Resource.SetProviderConfiguration:output_type -> proto.bresrch.v1.SetConfigResponse
+	5,  // 18: proto.bresrch.v1.Resource.Sync:output_type -> proto.bresrch.v1.SyncResponse
+	8,  // 19: proto.bresrch.v1.Resource.Push:output_type -> proto.bresrch.v1.PushResponse
+	10, // 20: proto.bresrch.v1.Resource.MigrateDatabase:output_type -> proto.bresrch.v1.MigrateResponse
+	13, // 21: proto.bresrch.v1.Resource.RegisterMigrations:output_type -> proto.bresrch.v1.RegisterMigrationsResponse
+	14, // [14:22] is the sub-list for method output_type
+	6,  // [6:14] is the sub-list for method input_type
 	6,  // [6:6] is the sub-list for extension type_name
 	6,  // [6:6] is the sub-list for extension extendee
 	0,  // [0:6] is the sub-list for field type_name
@@ -1195,7 +1331,7 @@ func file_v1_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_v1_proto_rawDesc), len(file_v1_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   20,
+			NumMessages:   22,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

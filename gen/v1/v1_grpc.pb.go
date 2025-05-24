@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	Resource_GetSupportedVersions_FullMethodName     = "/proto.bresrch.v1.Resource/GetSupportedVersions"
+	Resource_Ping_FullMethodName                     = "/proto.bresrch.v1.Resource/Ping"
 	Resource_GetProviderConfiguration_FullMethodName = "/proto.bresrch.v1.Resource/GetProviderConfiguration"
 	Resource_SetProviderConfiguration_FullMethodName = "/proto.bresrch.v1.Resource/SetProviderConfiguration"
 	Resource_Sync_FullMethodName                     = "/proto.bresrch.v1.Resource/Sync"
@@ -36,6 +37,8 @@ const (
 type ResourceClient interface {
 	// Basic operations
 	GetSupportedVersions(ctx context.Context, in *VersionRequest, opts ...grpc.CallOption) (*VersionResponse, error)
+	// Ping tests connectivity between bresearch and provider
+	Ping(ctx context.Context, in *PingRequest, opts ...grpc.CallOption) (*PingResponse, error)
 	// GetProviderConfiguration returns provider-specific configuration
 	GetProviderConfiguration(ctx context.Context, in *ConfigRequest, opts ...grpc.CallOption) (*ConfigResponse, error)
 	// SetProviderConfiguration sends configuration from bresearch to provider
@@ -62,6 +65,16 @@ func (c *resourceClient) GetSupportedVersions(ctx context.Context, in *VersionRe
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(VersionResponse)
 	err := c.cc.Invoke(ctx, Resource_GetSupportedVersions_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *resourceClient) Ping(ctx context.Context, in *PingRequest, opts ...grpc.CallOption) (*PingResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PingResponse)
+	err := c.cc.Invoke(ctx, Resource_Ping_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -136,6 +149,8 @@ func (c *resourceClient) RegisterMigrations(ctx context.Context, in *RegisterMig
 type ResourceServer interface {
 	// Basic operations
 	GetSupportedVersions(context.Context, *VersionRequest) (*VersionResponse, error)
+	// Ping tests connectivity between bresearch and provider
+	Ping(context.Context, *PingRequest) (*PingResponse, error)
 	// GetProviderConfiguration returns provider-specific configuration
 	GetProviderConfiguration(context.Context, *ConfigRequest) (*ConfigResponse, error)
 	// SetProviderConfiguration sends configuration from bresearch to provider
@@ -160,6 +175,9 @@ type UnimplementedResourceServer struct{}
 
 func (UnimplementedResourceServer) GetSupportedVersions(context.Context, *VersionRequest) (*VersionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSupportedVersions not implemented")
+}
+func (UnimplementedResourceServer) Ping(context.Context, *PingRequest) (*PingResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Ping not implemented")
 }
 func (UnimplementedResourceServer) GetProviderConfiguration(context.Context, *ConfigRequest) (*ConfigResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetProviderConfiguration not implemented")
@@ -214,6 +232,24 @@ func _Resource_GetSupportedVersions_Handler(srv interface{}, ctx context.Context
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ResourceServer).GetSupportedVersions(ctx, req.(*VersionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Resource_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PingRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ResourceServer).Ping(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Resource_Ping_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ResourceServer).Ping(ctx, req.(*PingRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -336,6 +372,10 @@ var Resource_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetSupportedVersions",
 			Handler:    _Resource_GetSupportedVersions_Handler,
+		},
+		{
+			MethodName: "Ping",
+			Handler:    _Resource_Ping_Handler,
 		},
 		{
 			MethodName: "GetProviderConfiguration",
