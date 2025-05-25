@@ -793,12 +793,11 @@ func (x *MigrationOperation) GetTimestamp() int64 {
 	return 0
 }
 
-// RegisterMigrationsRequest sends provider migrations to bresearch
+// RegisterMigrationsRequest asks provider for its migrations
 type RegisterMigrationsRequest struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	ProviderId     string                 `protobuf:"bytes,1,opt,name=provider_id,json=providerId,proto3" json:"provider_id,omitempty"`
 	CurrentVersion string                 `protobuf:"bytes,2,opt,name=current_version,json=currentVersion,proto3" json:"current_version,omitempty"`
-	Migrations     map[string][]byte      `protobuf:"bytes,3,rep,name=migrations,proto3" json:"migrations,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"` // version -> migration SQL
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -847,19 +846,13 @@ func (x *RegisterMigrationsRequest) GetCurrentVersion() string {
 	return ""
 }
 
-func (x *RegisterMigrationsRequest) GetMigrations() map[string][]byte {
-	if x != nil {
-		return x.Migrations
-	}
-	return nil
-}
-
-// RegisterMigrationsResponse acknowledges migration registration
+// RegisterMigrationsResponse sends provider migrations to bresearch
 type RegisterMigrationsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
 	Error         string                 `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
-	TargetVersion string                 `protobuf:"bytes,3,opt,name=target_version,json=targetVersion,proto3" json:"target_version,omitempty"` // Version bresearch wants provider to migrate to
+	TargetVersion string                 `protobuf:"bytes,3,opt,name=target_version,json=targetVersion,proto3" json:"target_version,omitempty"`                                                // Latest version provider has
+	Migrations    map[string][]byte      `protobuf:"bytes,4,rep,name=migrations,proto3" json:"migrations,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"` // version -> migration SQL
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -913,6 +906,13 @@ func (x *RegisterMigrationsResponse) GetTargetVersion() string {
 		return x.TargetVersion
 	}
 	return ""
+}
+
+func (x *RegisterMigrationsResponse) GetMigrations() map[string][]byte {
+	if x != nil {
+		return x.Migrations
+	}
+	return nil
 }
 
 // VersionRequest is sent to query supported protocol versions
@@ -1212,21 +1212,21 @@ const file_v1_proto_rawDesc = "" +
 	"\aversion\x18\x01 \x01(\tR\aversion\x12 \n" +
 	"\vdescription\x18\x02 \x01(\tR\vdescription\x12\x18\n" +
 	"\aapplied\x18\x03 \x01(\bR\aapplied\x12\x1c\n" +
-	"\ttimestamp\x18\x04 \x01(\x03R\ttimestamp\"\x81\x02\n" +
+	"\ttimestamp\x18\x04 \x01(\x03R\ttimestamp\"e\n" +
 	"\x19RegisterMigrationsRequest\x12\x1f\n" +
 	"\vprovider_id\x18\x01 \x01(\tR\n" +
 	"providerId\x12'\n" +
-	"\x0fcurrent_version\x18\x02 \x01(\tR\x0ecurrentVersion\x12[\n" +
-	"\n" +
-	"migrations\x18\x03 \x03(\v2;.proto.bresrch.v1.RegisterMigrationsRequest.MigrationsEntryR\n" +
-	"migrations\x1a=\n" +
-	"\x0fMigrationsEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\fR\x05value:\x028\x01\"s\n" +
+	"\x0fcurrent_version\x18\x02 \x01(\tR\x0ecurrentVersion\"\x90\x02\n" +
 	"\x1aRegisterMigrationsResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x14\n" +
 	"\x05error\x18\x02 \x01(\tR\x05error\x12%\n" +
-	"\x0etarget_version\x18\x03 \x01(\tR\rtargetVersion\"\x10\n" +
+	"\x0etarget_version\x18\x03 \x01(\tR\rtargetVersion\x12\\\n" +
+	"\n" +
+	"migrations\x18\x04 \x03(\v2<.proto.bresrch.v1.RegisterMigrationsResponse.MigrationsEntryR\n" +
+	"migrations\x1a=\n" +
+	"\x0fMigrationsEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\fR\x05value:\x028\x01\"\x10\n" +
 	"\x0eVersionRequest\"\x82\x01\n" +
 	"\x0fVersionResponse\x12-\n" +
 	"\x12supported_versions\x18\x01 \x03(\tR\x11supportedVersions\x12\x1f\n" +
@@ -1288,7 +1288,7 @@ var file_v1_proto_goTypes = []any{
 	nil,                                // 18: proto.bresrch.v1.SyncRequest.OptionsEntry
 	nil,                                // 19: proto.bresrch.v1.SyncMetrics.OperationCountsEntry
 	nil,                                // 20: proto.bresrch.v1.MigrateRequest.MigrationsEntry
-	nil,                                // 21: proto.bresrch.v1.RegisterMigrationsRequest.MigrationsEntry
+	nil,                                // 21: proto.bresrch.v1.RegisterMigrationsResponse.MigrationsEntry
 }
 var file_v1_proto_depIdxs = []int32{
 	18, // 0: proto.bresrch.v1.SyncRequest.options:type_name -> proto.bresrch.v1.SyncRequest.OptionsEntry
@@ -1296,7 +1296,7 @@ var file_v1_proto_depIdxs = []int32{
 	19, // 2: proto.bresrch.v1.SyncMetrics.operation_counts:type_name -> proto.bresrch.v1.SyncMetrics.OperationCountsEntry
 	20, // 3: proto.bresrch.v1.MigrateRequest.migrations:type_name -> proto.bresrch.v1.MigrateRequest.MigrationsEntry
 	11, // 4: proto.bresrch.v1.MigrateResponse.operations:type_name -> proto.bresrch.v1.MigrationOperation
-	21, // 5: proto.bresrch.v1.RegisterMigrationsRequest.migrations:type_name -> proto.bresrch.v1.RegisterMigrationsRequest.MigrationsEntry
+	21, // 5: proto.bresrch.v1.RegisterMigrationsResponse.migrations:type_name -> proto.bresrch.v1.RegisterMigrationsResponse.MigrationsEntry
 	14, // 6: proto.bresrch.v1.Resource.GetSupportedVersions:input_type -> proto.bresrch.v1.VersionRequest
 	16, // 7: proto.bresrch.v1.Resource.Ping:input_type -> proto.bresrch.v1.PingRequest
 	0,  // 8: proto.bresrch.v1.Resource.GetProviderConfiguration:input_type -> proto.bresrch.v1.ConfigRequest

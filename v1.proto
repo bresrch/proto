@@ -119,18 +119,18 @@ message MigrationOperation {
   int64 timestamp = 4;
 }
 
-// RegisterMigrationsRequest sends provider migrations to bresearch
+// RegisterMigrationsRequest asks provider for its migrations
 message RegisterMigrationsRequest {
   string provider_id = 1;
   string current_version = 2;
-  map<string, bytes> migrations = 3; // version -> migration SQL
 }
 
-// RegisterMigrationsResponse acknowledges migration registration
+// RegisterMigrationsResponse sends provider migrations to bresearch
 message RegisterMigrationsResponse {
   bool success = 1;
   string error = 2;
-  string target_version = 3; // Version bresearch wants provider to migrate to
+  string target_version = 3; // Latest version provider has
+  map<string, bytes> migrations = 4; // version -> migration SQL
 }
 
 // VersionRequest is sent to query supported protocol versions
