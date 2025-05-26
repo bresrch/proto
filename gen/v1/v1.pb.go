@@ -478,6 +478,7 @@ type PushRequest struct {
 	EntityType    string                 `protobuf:"bytes,1,opt,name=entity_type,json=entityType,proto3" json:"entity_type,omitempty"`
 	Data          []byte                 `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"` // JSON-encoded data array
 	SyncId        string                 `protobuf:"bytes,3,opt,name=sync_id,json=syncId,proto3" json:"sync_id,omitempty"`
+	TableSchema   *TableSchema           `protobuf:"bytes,4,opt,name=table_schema,json=tableSchema,proto3" json:"table_schema,omitempty"` // Schema information for the target table
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -533,6 +534,74 @@ func (x *PushRequest) GetSyncId() string {
 	return ""
 }
 
+func (x *PushRequest) GetTableSchema() *TableSchema {
+	if x != nil {
+		return x.TableSchema
+	}
+	return nil
+}
+
+// TableSchema defines the target table and field mappings
+type TableSchema struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	TableName      string                 `protobuf:"bytes,1,opt,name=table_name,json=tableName,proto3" json:"table_name,omitempty"`                                                                                       // e.g., "okta_users", "google_groups"
+	FieldMappings  map[string]string      `protobuf:"bytes,2,rep,name=field_mappings,json=fieldMappings,proto3" json:"field_mappings,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"` // maps data field names to table column names
+	RequiredFields []string               `protobuf:"bytes,3,rep,name=required_fields,json=requiredFields,proto3" json:"required_fields,omitempty"`                                                                        // fields that must be present
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *TableSchema) Reset() {
+	*x = TableSchema{}
+	mi := &file_v1_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TableSchema) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TableSchema) ProtoMessage() {}
+
+func (x *TableSchema) ProtoReflect() protoreflect.Message {
+	mi := &file_v1_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TableSchema.ProtoReflect.Descriptor instead.
+func (*TableSchema) Descriptor() ([]byte, []int) {
+	return file_v1_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *TableSchema) GetTableName() string {
+	if x != nil {
+		return x.TableName
+	}
+	return ""
+}
+
+func (x *TableSchema) GetFieldMappings() map[string]string {
+	if x != nil {
+		return x.FieldMappings
+	}
+	return nil
+}
+
+func (x *TableSchema) GetRequiredFields() []string {
+	if x != nil {
+		return x.RequiredFields
+	}
+	return nil
+}
+
 // PushResponse acknowledges data receipt
 type PushResponse struct {
 	state            protoimpl.MessageState `protogen:"open.v1"`
@@ -545,7 +614,7 @@ type PushResponse struct {
 
 func (x *PushResponse) Reset() {
 	*x = PushResponse{}
-	mi := &file_v1_proto_msgTypes[8]
+	mi := &file_v1_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -557,7 +626,7 @@ func (x *PushResponse) String() string {
 func (*PushResponse) ProtoMessage() {}
 
 func (x *PushResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_proto_msgTypes[8]
+	mi := &file_v1_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -570,7 +639,7 @@ func (x *PushResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PushResponse.ProtoReflect.Descriptor instead.
 func (*PushResponse) Descriptor() ([]byte, []int) {
-	return file_v1_proto_rawDescGZIP(), []int{8}
+	return file_v1_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *PushResponse) GetSuccess() bool {
@@ -606,7 +675,7 @@ type MigrateRequest struct {
 
 func (x *MigrateRequest) Reset() {
 	*x = MigrateRequest{}
-	mi := &file_v1_proto_msgTypes[9]
+	mi := &file_v1_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -618,7 +687,7 @@ func (x *MigrateRequest) String() string {
 func (*MigrateRequest) ProtoMessage() {}
 
 func (x *MigrateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_proto_msgTypes[9]
+	mi := &file_v1_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -631,7 +700,7 @@ func (x *MigrateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MigrateRequest.ProtoReflect.Descriptor instead.
 func (*MigrateRequest) Descriptor() ([]byte, []int) {
-	return file_v1_proto_rawDescGZIP(), []int{9}
+	return file_v1_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *MigrateRequest) GetTargetVersion() string {
@@ -668,7 +737,7 @@ type MigrateResponse struct {
 
 func (x *MigrateResponse) Reset() {
 	*x = MigrateResponse{}
-	mi := &file_v1_proto_msgTypes[10]
+	mi := &file_v1_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -680,7 +749,7 @@ func (x *MigrateResponse) String() string {
 func (*MigrateResponse) ProtoMessage() {}
 
 func (x *MigrateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_proto_msgTypes[10]
+	mi := &file_v1_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -693,7 +762,7 @@ func (x *MigrateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MigrateResponse.ProtoReflect.Descriptor instead.
 func (*MigrateResponse) Descriptor() ([]byte, []int) {
-	return file_v1_proto_rawDescGZIP(), []int{10}
+	return file_v1_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *MigrateResponse) GetSuccess() bool {
@@ -737,7 +806,7 @@ type MigrationOperation struct {
 
 func (x *MigrationOperation) Reset() {
 	*x = MigrationOperation{}
-	mi := &file_v1_proto_msgTypes[11]
+	mi := &file_v1_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -749,7 +818,7 @@ func (x *MigrationOperation) String() string {
 func (*MigrationOperation) ProtoMessage() {}
 
 func (x *MigrationOperation) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_proto_msgTypes[11]
+	mi := &file_v1_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -762,7 +831,7 @@ func (x *MigrationOperation) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MigrationOperation.ProtoReflect.Descriptor instead.
 func (*MigrationOperation) Descriptor() ([]byte, []int) {
-	return file_v1_proto_rawDescGZIP(), []int{11}
+	return file_v1_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *MigrationOperation) GetVersion() string {
@@ -804,7 +873,7 @@ type RegisterMigrationsRequest struct {
 
 func (x *RegisterMigrationsRequest) Reset() {
 	*x = RegisterMigrationsRequest{}
-	mi := &file_v1_proto_msgTypes[12]
+	mi := &file_v1_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -816,7 +885,7 @@ func (x *RegisterMigrationsRequest) String() string {
 func (*RegisterMigrationsRequest) ProtoMessage() {}
 
 func (x *RegisterMigrationsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_proto_msgTypes[12]
+	mi := &file_v1_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -829,7 +898,7 @@ func (x *RegisterMigrationsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RegisterMigrationsRequest.ProtoReflect.Descriptor instead.
 func (*RegisterMigrationsRequest) Descriptor() ([]byte, []int) {
-	return file_v1_proto_rawDescGZIP(), []int{12}
+	return file_v1_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *RegisterMigrationsRequest) GetProviderId() string {
@@ -859,7 +928,7 @@ type RegisterMigrationsResponse struct {
 
 func (x *RegisterMigrationsResponse) Reset() {
 	*x = RegisterMigrationsResponse{}
-	mi := &file_v1_proto_msgTypes[13]
+	mi := &file_v1_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -871,7 +940,7 @@ func (x *RegisterMigrationsResponse) String() string {
 func (*RegisterMigrationsResponse) ProtoMessage() {}
 
 func (x *RegisterMigrationsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_proto_msgTypes[13]
+	mi := &file_v1_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -884,7 +953,7 @@ func (x *RegisterMigrationsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RegisterMigrationsResponse.ProtoReflect.Descriptor instead.
 func (*RegisterMigrationsResponse) Descriptor() ([]byte, []int) {
-	return file_v1_proto_rawDescGZIP(), []int{13}
+	return file_v1_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *RegisterMigrationsResponse) GetSuccess() bool {
@@ -924,7 +993,7 @@ type VersionRequest struct {
 
 func (x *VersionRequest) Reset() {
 	*x = VersionRequest{}
-	mi := &file_v1_proto_msgTypes[14]
+	mi := &file_v1_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -936,7 +1005,7 @@ func (x *VersionRequest) String() string {
 func (*VersionRequest) ProtoMessage() {}
 
 func (x *VersionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_proto_msgTypes[14]
+	mi := &file_v1_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -949,7 +1018,7 @@ func (x *VersionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VersionRequest.ProtoReflect.Descriptor instead.
 func (*VersionRequest) Descriptor() ([]byte, []int) {
-	return file_v1_proto_rawDescGZIP(), []int{14}
+	return file_v1_proto_rawDescGZIP(), []int{15}
 }
 
 // VersionResponse contains information about supported protocol versions
@@ -967,7 +1036,7 @@ type VersionResponse struct {
 
 func (x *VersionResponse) Reset() {
 	*x = VersionResponse{}
-	mi := &file_v1_proto_msgTypes[15]
+	mi := &file_v1_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -979,7 +1048,7 @@ func (x *VersionResponse) String() string {
 func (*VersionResponse) ProtoMessage() {}
 
 func (x *VersionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_proto_msgTypes[15]
+	mi := &file_v1_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -992,7 +1061,7 @@ func (x *VersionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VersionResponse.ProtoReflect.Descriptor instead.
 func (*VersionResponse) Descriptor() ([]byte, []int) {
-	return file_v1_proto_rawDescGZIP(), []int{15}
+	return file_v1_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *VersionResponse) GetSupportedVersions() []string {
@@ -1027,7 +1096,7 @@ type PingRequest struct {
 
 func (x *PingRequest) Reset() {
 	*x = PingRequest{}
-	mi := &file_v1_proto_msgTypes[16]
+	mi := &file_v1_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1039,7 +1108,7 @@ func (x *PingRequest) String() string {
 func (*PingRequest) ProtoMessage() {}
 
 func (x *PingRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_proto_msgTypes[16]
+	mi := &file_v1_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1052,7 +1121,7 @@ func (x *PingRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PingRequest.ProtoReflect.Descriptor instead.
 func (*PingRequest) Descriptor() ([]byte, []int) {
-	return file_v1_proto_rawDescGZIP(), []int{16}
+	return file_v1_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *PingRequest) GetMessage() string {
@@ -1082,7 +1151,7 @@ type PingResponse struct {
 
 func (x *PingResponse) Reset() {
 	*x = PingResponse{}
-	mi := &file_v1_proto_msgTypes[17]
+	mi := &file_v1_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1094,7 +1163,7 @@ func (x *PingResponse) String() string {
 func (*PingResponse) ProtoMessage() {}
 
 func (x *PingResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_proto_msgTypes[17]
+	mi := &file_v1_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1107,7 +1176,7 @@ func (x *PingResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PingResponse.ProtoReflect.Descriptor instead.
 func (*PingResponse) Descriptor() ([]byte, []int) {
-	return file_v1_proto_rawDescGZIP(), []int{17}
+	return file_v1_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *PingResponse) GetSuccess() bool {
@@ -1182,12 +1251,21 @@ const file_v1_proto_rawDesc = "" +
 	"\x10operation_counts\x18\x05 \x03(\v22.proto.bresrch.v1.SyncMetrics.OperationCountsEntryR\x0foperationCounts\x1aB\n" +
 	"\x14OperationCountsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\x03R\x05value:\x028\x01\"[\n" +
+	"\x05value\x18\x02 \x01(\x03R\x05value:\x028\x01\"\x9d\x01\n" +
 	"\vPushRequest\x12\x1f\n" +
 	"\ventity_type\x18\x01 \x01(\tR\n" +
 	"entityType\x12\x12\n" +
 	"\x04data\x18\x02 \x01(\fR\x04data\x12\x17\n" +
-	"\async_id\x18\x03 \x01(\tR\x06syncId\"k\n" +
+	"\async_id\x18\x03 \x01(\tR\x06syncId\x12@\n" +
+	"\ftable_schema\x18\x04 \x01(\v2\x1d.proto.bresrch.v1.TableSchemaR\vtableSchema\"\xf0\x01\n" +
+	"\vTableSchema\x12\x1d\n" +
+	"\n" +
+	"table_name\x18\x01 \x01(\tR\ttableName\x12W\n" +
+	"\x0efield_mappings\x18\x02 \x03(\v20.proto.bresrch.v1.TableSchema.FieldMappingsEntryR\rfieldMappings\x12'\n" +
+	"\x0frequired_fields\x18\x03 \x03(\tR\x0erequiredFields\x1a@\n" +
+	"\x12FieldMappingsEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"k\n" +
 	"\fPushResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x14\n" +
 	"\x05error\x18\x02 \x01(\tR\x05error\x12+\n" +
@@ -1265,7 +1343,7 @@ func file_v1_proto_rawDescGZIP() []byte {
 	return file_v1_proto_rawDescData
 }
 
-var file_v1_proto_msgTypes = make([]protoimpl.MessageInfo, 22)
+var file_v1_proto_msgTypes = make([]protoimpl.MessageInfo, 24)
 var file_v1_proto_goTypes = []any{
 	(*ConfigRequest)(nil),              // 0: proto.bresrch.v1.ConfigRequest
 	(*ConfigResponse)(nil),             // 1: proto.bresrch.v1.ConfigResponse
@@ -1275,49 +1353,53 @@ var file_v1_proto_goTypes = []any{
 	(*SyncResponse)(nil),               // 5: proto.bresrch.v1.SyncResponse
 	(*SyncMetrics)(nil),                // 6: proto.bresrch.v1.SyncMetrics
 	(*PushRequest)(nil),                // 7: proto.bresrch.v1.PushRequest
-	(*PushResponse)(nil),               // 8: proto.bresrch.v1.PushResponse
-	(*MigrateRequest)(nil),             // 9: proto.bresrch.v1.MigrateRequest
-	(*MigrateResponse)(nil),            // 10: proto.bresrch.v1.MigrateResponse
-	(*MigrationOperation)(nil),         // 11: proto.bresrch.v1.MigrationOperation
-	(*RegisterMigrationsRequest)(nil),  // 12: proto.bresrch.v1.RegisterMigrationsRequest
-	(*RegisterMigrationsResponse)(nil), // 13: proto.bresrch.v1.RegisterMigrationsResponse
-	(*VersionRequest)(nil),             // 14: proto.bresrch.v1.VersionRequest
-	(*VersionResponse)(nil),            // 15: proto.bresrch.v1.VersionResponse
-	(*PingRequest)(nil),                // 16: proto.bresrch.v1.PingRequest
-	(*PingResponse)(nil),               // 17: proto.bresrch.v1.PingResponse
-	nil,                                // 18: proto.bresrch.v1.SyncRequest.OptionsEntry
-	nil,                                // 19: proto.bresrch.v1.SyncMetrics.OperationCountsEntry
-	nil,                                // 20: proto.bresrch.v1.MigrateRequest.MigrationsEntry
-	nil,                                // 21: proto.bresrch.v1.RegisterMigrationsResponse.MigrationsEntry
+	(*TableSchema)(nil),                // 8: proto.bresrch.v1.TableSchema
+	(*PushResponse)(nil),               // 9: proto.bresrch.v1.PushResponse
+	(*MigrateRequest)(nil),             // 10: proto.bresrch.v1.MigrateRequest
+	(*MigrateResponse)(nil),            // 11: proto.bresrch.v1.MigrateResponse
+	(*MigrationOperation)(nil),         // 12: proto.bresrch.v1.MigrationOperation
+	(*RegisterMigrationsRequest)(nil),  // 13: proto.bresrch.v1.RegisterMigrationsRequest
+	(*RegisterMigrationsResponse)(nil), // 14: proto.bresrch.v1.RegisterMigrationsResponse
+	(*VersionRequest)(nil),             // 15: proto.bresrch.v1.VersionRequest
+	(*VersionResponse)(nil),            // 16: proto.bresrch.v1.VersionResponse
+	(*PingRequest)(nil),                // 17: proto.bresrch.v1.PingRequest
+	(*PingResponse)(nil),               // 18: proto.bresrch.v1.PingResponse
+	nil,                                // 19: proto.bresrch.v1.SyncRequest.OptionsEntry
+	nil,                                // 20: proto.bresrch.v1.SyncMetrics.OperationCountsEntry
+	nil,                                // 21: proto.bresrch.v1.TableSchema.FieldMappingsEntry
+	nil,                                // 22: proto.bresrch.v1.MigrateRequest.MigrationsEntry
+	nil,                                // 23: proto.bresrch.v1.RegisterMigrationsResponse.MigrationsEntry
 }
 var file_v1_proto_depIdxs = []int32{
-	18, // 0: proto.bresrch.v1.SyncRequest.options:type_name -> proto.bresrch.v1.SyncRequest.OptionsEntry
+	19, // 0: proto.bresrch.v1.SyncRequest.options:type_name -> proto.bresrch.v1.SyncRequest.OptionsEntry
 	6,  // 1: proto.bresrch.v1.SyncResponse.metrics:type_name -> proto.bresrch.v1.SyncMetrics
-	19, // 2: proto.bresrch.v1.SyncMetrics.operation_counts:type_name -> proto.bresrch.v1.SyncMetrics.OperationCountsEntry
-	20, // 3: proto.bresrch.v1.MigrateRequest.migrations:type_name -> proto.bresrch.v1.MigrateRequest.MigrationsEntry
-	11, // 4: proto.bresrch.v1.MigrateResponse.operations:type_name -> proto.bresrch.v1.MigrationOperation
-	21, // 5: proto.bresrch.v1.RegisterMigrationsResponse.migrations:type_name -> proto.bresrch.v1.RegisterMigrationsResponse.MigrationsEntry
-	14, // 6: proto.bresrch.v1.Resource.GetSupportedVersions:input_type -> proto.bresrch.v1.VersionRequest
-	16, // 7: proto.bresrch.v1.Resource.Ping:input_type -> proto.bresrch.v1.PingRequest
-	0,  // 8: proto.bresrch.v1.Resource.GetProviderConfiguration:input_type -> proto.bresrch.v1.ConfigRequest
-	2,  // 9: proto.bresrch.v1.Resource.SetProviderConfiguration:input_type -> proto.bresrch.v1.SetConfigRequest
-	4,  // 10: proto.bresrch.v1.Resource.Sync:input_type -> proto.bresrch.v1.SyncRequest
-	7,  // 11: proto.bresrch.v1.Resource.Push:input_type -> proto.bresrch.v1.PushRequest
-	9,  // 12: proto.bresrch.v1.Resource.MigrateDatabase:input_type -> proto.bresrch.v1.MigrateRequest
-	12, // 13: proto.bresrch.v1.Resource.RegisterMigrations:input_type -> proto.bresrch.v1.RegisterMigrationsRequest
-	15, // 14: proto.bresrch.v1.Resource.GetSupportedVersions:output_type -> proto.bresrch.v1.VersionResponse
-	17, // 15: proto.bresrch.v1.Resource.Ping:output_type -> proto.bresrch.v1.PingResponse
-	1,  // 16: proto.bresrch.v1.Resource.GetProviderConfiguration:output_type -> proto.bresrch.v1.ConfigResponse
-	3,  // 17: proto.bresrch.v1.Resource.SetProviderConfiguration:output_type -> proto.bresrch.v1.SetConfigResponse
-	5,  // 18: proto.bresrch.v1.Resource.Sync:output_type -> proto.bresrch.v1.SyncResponse
-	8,  // 19: proto.bresrch.v1.Resource.Push:output_type -> proto.bresrch.v1.PushResponse
-	10, // 20: proto.bresrch.v1.Resource.MigrateDatabase:output_type -> proto.bresrch.v1.MigrateResponse
-	13, // 21: proto.bresrch.v1.Resource.RegisterMigrations:output_type -> proto.bresrch.v1.RegisterMigrationsResponse
-	14, // [14:22] is the sub-list for method output_type
-	6,  // [6:14] is the sub-list for method input_type
-	6,  // [6:6] is the sub-list for extension type_name
-	6,  // [6:6] is the sub-list for extension extendee
-	0,  // [0:6] is the sub-list for field type_name
+	20, // 2: proto.bresrch.v1.SyncMetrics.operation_counts:type_name -> proto.bresrch.v1.SyncMetrics.OperationCountsEntry
+	8,  // 3: proto.bresrch.v1.PushRequest.table_schema:type_name -> proto.bresrch.v1.TableSchema
+	21, // 4: proto.bresrch.v1.TableSchema.field_mappings:type_name -> proto.bresrch.v1.TableSchema.FieldMappingsEntry
+	22, // 5: proto.bresrch.v1.MigrateRequest.migrations:type_name -> proto.bresrch.v1.MigrateRequest.MigrationsEntry
+	12, // 6: proto.bresrch.v1.MigrateResponse.operations:type_name -> proto.bresrch.v1.MigrationOperation
+	23, // 7: proto.bresrch.v1.RegisterMigrationsResponse.migrations:type_name -> proto.bresrch.v1.RegisterMigrationsResponse.MigrationsEntry
+	15, // 8: proto.bresrch.v1.Resource.GetSupportedVersions:input_type -> proto.bresrch.v1.VersionRequest
+	17, // 9: proto.bresrch.v1.Resource.Ping:input_type -> proto.bresrch.v1.PingRequest
+	0,  // 10: proto.bresrch.v1.Resource.GetProviderConfiguration:input_type -> proto.bresrch.v1.ConfigRequest
+	2,  // 11: proto.bresrch.v1.Resource.SetProviderConfiguration:input_type -> proto.bresrch.v1.SetConfigRequest
+	4,  // 12: proto.bresrch.v1.Resource.Sync:input_type -> proto.bresrch.v1.SyncRequest
+	7,  // 13: proto.bresrch.v1.Resource.Push:input_type -> proto.bresrch.v1.PushRequest
+	10, // 14: proto.bresrch.v1.Resource.MigrateDatabase:input_type -> proto.bresrch.v1.MigrateRequest
+	13, // 15: proto.bresrch.v1.Resource.RegisterMigrations:input_type -> proto.bresrch.v1.RegisterMigrationsRequest
+	16, // 16: proto.bresrch.v1.Resource.GetSupportedVersions:output_type -> proto.bresrch.v1.VersionResponse
+	18, // 17: proto.bresrch.v1.Resource.Ping:output_type -> proto.bresrch.v1.PingResponse
+	1,  // 18: proto.bresrch.v1.Resource.GetProviderConfiguration:output_type -> proto.bresrch.v1.ConfigResponse
+	3,  // 19: proto.bresrch.v1.Resource.SetProviderConfiguration:output_type -> proto.bresrch.v1.SetConfigResponse
+	5,  // 20: proto.bresrch.v1.Resource.Sync:output_type -> proto.bresrch.v1.SyncResponse
+	9,  // 21: proto.bresrch.v1.Resource.Push:output_type -> proto.bresrch.v1.PushResponse
+	11, // 22: proto.bresrch.v1.Resource.MigrateDatabase:output_type -> proto.bresrch.v1.MigrateResponse
+	14, // 23: proto.bresrch.v1.Resource.RegisterMigrations:output_type -> proto.bresrch.v1.RegisterMigrationsResponse
+	16, // [16:24] is the sub-list for method output_type
+	8,  // [8:16] is the sub-list for method input_type
+	8,  // [8:8] is the sub-list for extension type_name
+	8,  // [8:8] is the sub-list for extension extendee
+	0,  // [0:8] is the sub-list for field type_name
 }
 
 func init() { file_v1_proto_init() }
@@ -1331,7 +1413,7 @@ func file_v1_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_v1_proto_rawDesc), len(file_v1_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   22,
+			NumMessages:   24,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

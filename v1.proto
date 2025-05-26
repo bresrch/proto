@@ -87,6 +87,14 @@ message PushRequest {
   string entity_type = 1;
   bytes data = 2;  // JSON-encoded data array
   string sync_id = 3;
+  TableSchema table_schema = 4;  // Schema information for the target table
+}
+
+// TableSchema defines the target table and field mappings
+message TableSchema {
+  string table_name = 1;  // e.g., "okta_users", "google_groups"
+  map<string, string> field_mappings = 2;  // maps data field names to table column names
+  repeated string required_fields = 3;  // fields that must be present
 }
 
 // PushResponse acknowledges data receipt
