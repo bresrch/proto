@@ -326,8 +326,11 @@ type SyncResponse struct {
 	RecordsSynced     int64                  `protobuf:"varint,3,opt,name=records_synced,json=recordsSynced,proto3" json:"records_synced,omitempty"`
 	LastSyncTimestamp int64                  `protobuf:"varint,4,opt,name=last_sync_timestamp,json=lastSyncTimestamp,proto3" json:"last_sync_timestamp,omitempty"`
 	Metrics           *SyncMetrics           `protobuf:"bytes,5,opt,name=metrics,proto3" json:"metrics,omitempty"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
+	// Data collected during sync
+	Data          []byte       `protobuf:"bytes,6,opt,name=data,proto3" json:"data,omitempty"`                                  // JSON-encoded data array
+	TableSchema   *TableSchema `protobuf:"bytes,7,opt,name=table_schema,json=tableSchema,proto3" json:"table_schema,omitempty"` // Schema information for the data
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *SyncResponse) Reset() {
@@ -391,6 +394,20 @@ func (x *SyncResponse) GetLastSyncTimestamp() int64 {
 func (x *SyncResponse) GetMetrics() *SyncMetrics {
 	if x != nil {
 		return x.Metrics
+	}
+	return nil
+}
+
+func (x *SyncResponse) GetData() []byte {
+	if x != nil {
+		return x.Data
+	}
+	return nil
+}
+
+func (x *SyncResponse) GetTableSchema() *TableSchema {
+	if x != nil {
+		return x.TableSchema
 	}
 	return nil
 }
@@ -1236,13 +1253,15 @@ const file_v1_proto_rawDesc = "" +
 	"\aoptions\x18\x04 \x03(\v2*.proto.bresrch.v1.SyncRequest.OptionsEntryR\aoptions\x1a:\n" +
 	"\fOptionsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xce\x01\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xa4\x02\n" +
 	"\fSyncResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x14\n" +
 	"\x05error\x18\x02 \x01(\tR\x05error\x12%\n" +
 	"\x0erecords_synced\x18\x03 \x01(\x03R\rrecordsSynced\x12.\n" +
 	"\x13last_sync_timestamp\x18\x04 \x01(\x03R\x11lastSyncTimestamp\x127\n" +
-	"\ametrics\x18\x05 \x01(\v2\x1d.proto.bresrch.v1.SyncMetricsR\ametrics\"\xec\x02\n" +
+	"\ametrics\x18\x05 \x01(\v2\x1d.proto.bresrch.v1.SyncMetricsR\ametrics\x12\x12\n" +
+	"\x04data\x18\x06 \x01(\fR\x04data\x12@\n" +
+	"\ftable_schema\x18\a \x01(\v2\x1d.proto.bresrch.v1.TableSchemaR\vtableSchema\"\xec\x02\n" +
 	"\vSyncMetrics\x12&\n" +
 	"\x0ftotal_api_calls\x18\x01 \x01(\x03R\rtotalApiCalls\x126\n" +
 	"\x17total_records_processed\x18\x02 \x01(\x03R\x15totalRecordsProcessed\x126\n" +
@@ -1373,33 +1392,34 @@ var file_v1_proto_goTypes = []any{
 var file_v1_proto_depIdxs = []int32{
 	19, // 0: proto.bresrch.v1.SyncRequest.options:type_name -> proto.bresrch.v1.SyncRequest.OptionsEntry
 	6,  // 1: proto.bresrch.v1.SyncResponse.metrics:type_name -> proto.bresrch.v1.SyncMetrics
-	20, // 2: proto.bresrch.v1.SyncMetrics.operation_counts:type_name -> proto.bresrch.v1.SyncMetrics.OperationCountsEntry
-	8,  // 3: proto.bresrch.v1.PushRequest.table_schema:type_name -> proto.bresrch.v1.TableSchema
-	21, // 4: proto.bresrch.v1.TableSchema.field_mappings:type_name -> proto.bresrch.v1.TableSchema.FieldMappingsEntry
-	22, // 5: proto.bresrch.v1.MigrateRequest.migrations:type_name -> proto.bresrch.v1.MigrateRequest.MigrationsEntry
-	12, // 6: proto.bresrch.v1.MigrateResponse.operations:type_name -> proto.bresrch.v1.MigrationOperation
-	23, // 7: proto.bresrch.v1.RegisterMigrationsResponse.migrations:type_name -> proto.bresrch.v1.RegisterMigrationsResponse.MigrationsEntry
-	15, // 8: proto.bresrch.v1.Resource.GetSupportedVersions:input_type -> proto.bresrch.v1.VersionRequest
-	17, // 9: proto.bresrch.v1.Resource.Ping:input_type -> proto.bresrch.v1.PingRequest
-	0,  // 10: proto.bresrch.v1.Resource.GetProviderConfiguration:input_type -> proto.bresrch.v1.ConfigRequest
-	2,  // 11: proto.bresrch.v1.Resource.SetProviderConfiguration:input_type -> proto.bresrch.v1.SetConfigRequest
-	4,  // 12: proto.bresrch.v1.Resource.Sync:input_type -> proto.bresrch.v1.SyncRequest
-	7,  // 13: proto.bresrch.v1.Resource.Push:input_type -> proto.bresrch.v1.PushRequest
-	10, // 14: proto.bresrch.v1.Resource.MigrateDatabase:input_type -> proto.bresrch.v1.MigrateRequest
-	13, // 15: proto.bresrch.v1.Resource.RegisterMigrations:input_type -> proto.bresrch.v1.RegisterMigrationsRequest
-	16, // 16: proto.bresrch.v1.Resource.GetSupportedVersions:output_type -> proto.bresrch.v1.VersionResponse
-	18, // 17: proto.bresrch.v1.Resource.Ping:output_type -> proto.bresrch.v1.PingResponse
-	1,  // 18: proto.bresrch.v1.Resource.GetProviderConfiguration:output_type -> proto.bresrch.v1.ConfigResponse
-	3,  // 19: proto.bresrch.v1.Resource.SetProviderConfiguration:output_type -> proto.bresrch.v1.SetConfigResponse
-	5,  // 20: proto.bresrch.v1.Resource.Sync:output_type -> proto.bresrch.v1.SyncResponse
-	9,  // 21: proto.bresrch.v1.Resource.Push:output_type -> proto.bresrch.v1.PushResponse
-	11, // 22: proto.bresrch.v1.Resource.MigrateDatabase:output_type -> proto.bresrch.v1.MigrateResponse
-	14, // 23: proto.bresrch.v1.Resource.RegisterMigrations:output_type -> proto.bresrch.v1.RegisterMigrationsResponse
-	16, // [16:24] is the sub-list for method output_type
-	8,  // [8:16] is the sub-list for method input_type
-	8,  // [8:8] is the sub-list for extension type_name
-	8,  // [8:8] is the sub-list for extension extendee
-	0,  // [0:8] is the sub-list for field type_name
+	8,  // 2: proto.bresrch.v1.SyncResponse.table_schema:type_name -> proto.bresrch.v1.TableSchema
+	20, // 3: proto.bresrch.v1.SyncMetrics.operation_counts:type_name -> proto.bresrch.v1.SyncMetrics.OperationCountsEntry
+	8,  // 4: proto.bresrch.v1.PushRequest.table_schema:type_name -> proto.bresrch.v1.TableSchema
+	21, // 5: proto.bresrch.v1.TableSchema.field_mappings:type_name -> proto.bresrch.v1.TableSchema.FieldMappingsEntry
+	22, // 6: proto.bresrch.v1.MigrateRequest.migrations:type_name -> proto.bresrch.v1.MigrateRequest.MigrationsEntry
+	12, // 7: proto.bresrch.v1.MigrateResponse.operations:type_name -> proto.bresrch.v1.MigrationOperation
+	23, // 8: proto.bresrch.v1.RegisterMigrationsResponse.migrations:type_name -> proto.bresrch.v1.RegisterMigrationsResponse.MigrationsEntry
+	15, // 9: proto.bresrch.v1.Resource.GetSupportedVersions:input_type -> proto.bresrch.v1.VersionRequest
+	17, // 10: proto.bresrch.v1.Resource.Ping:input_type -> proto.bresrch.v1.PingRequest
+	0,  // 11: proto.bresrch.v1.Resource.GetProviderConfiguration:input_type -> proto.bresrch.v1.ConfigRequest
+	2,  // 12: proto.bresrch.v1.Resource.SetProviderConfiguration:input_type -> proto.bresrch.v1.SetConfigRequest
+	4,  // 13: proto.bresrch.v1.Resource.Sync:input_type -> proto.bresrch.v1.SyncRequest
+	7,  // 14: proto.bresrch.v1.Resource.Push:input_type -> proto.bresrch.v1.PushRequest
+	10, // 15: proto.bresrch.v1.Resource.MigrateDatabase:input_type -> proto.bresrch.v1.MigrateRequest
+	13, // 16: proto.bresrch.v1.Resource.RegisterMigrations:input_type -> proto.bresrch.v1.RegisterMigrationsRequest
+	16, // 17: proto.bresrch.v1.Resource.GetSupportedVersions:output_type -> proto.bresrch.v1.VersionResponse
+	18, // 18: proto.bresrch.v1.Resource.Ping:output_type -> proto.bresrch.v1.PingResponse
+	1,  // 19: proto.bresrch.v1.Resource.GetProviderConfiguration:output_type -> proto.bresrch.v1.ConfigResponse
+	3,  // 20: proto.bresrch.v1.Resource.SetProviderConfiguration:output_type -> proto.bresrch.v1.SetConfigResponse
+	5,  // 21: proto.bresrch.v1.Resource.Sync:output_type -> proto.bresrch.v1.SyncResponse
+	9,  // 22: proto.bresrch.v1.Resource.Push:output_type -> proto.bresrch.v1.PushResponse
+	11, // 23: proto.bresrch.v1.Resource.MigrateDatabase:output_type -> proto.bresrch.v1.MigrateResponse
+	14, // 24: proto.bresrch.v1.Resource.RegisterMigrations:output_type -> proto.bresrch.v1.RegisterMigrationsResponse
+	17, // [17:25] is the sub-list for method output_type
+	9,  // [9:17] is the sub-list for method input_type
+	9,  // [9:9] is the sub-list for extension type_name
+	9,  // [9:9] is the sub-list for extension extendee
+	0,  // [0:9] is the sub-list for field type_name
 }
 
 func init() { file_v1_proto_init() }

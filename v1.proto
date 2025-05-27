@@ -71,6 +71,10 @@ message SyncResponse {
   int64 records_synced = 3;
   int64 last_sync_timestamp = 4;
   SyncMetrics metrics = 5;
+  
+  // Data collected during sync
+  bytes data = 6;  // JSON-encoded data array
+  TableSchema table_schema = 7;  // Schema information for the data
 }
 
 // SyncMetrics contains metrics about a sync operation
