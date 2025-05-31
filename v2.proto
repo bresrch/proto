@@ -1,0 +1,115 @@
+syntax = "proto3";
+
+package proto.bresrch.v1;
+option go_package = "github.com/bresrch/proto/gen/v2";
+
+// Resource service defines operations for handling resources with data orchestration
+service Resource {
+
+  // Ping tests connectivity between bresearch and provider
+  rpc Ping(PingRequest) returns (PongResponse);
+
+  // GetRunningVersion retrieves the current version of the bresrch service
+  rpc GetRunningVersion(VersionRequest) returns (VersionResponse);
+
+  // GetProviderConfiguration returns provider-specific configuration
+  rpc GetProviderConfiguration(ConfigRequest) returns (ConfigResponse);
+
+  // Sevice -> Provider initiated sync request
+  rpc Sync(SyncRequest) returns (SyncResponse);
+  
+  // Push sends collected data back to bresrch
+  rpc Push(PushRequest) returns (PushResponse);
+  
+  // MigrateDatabase performs database migrations
+  rpc MigrateDatabase(MigrateRequest) returns (MigrateResponse);
+  
+}
+
+// PingRequest tests connectivity
+message PingRequest {
+  string message = 1;
+  int64 timestamp = 2;
+}
+
+// PongResponse acknowledges ping
+message PongResponse {
+  bool success = 1;
+  string message = 2;
+  int64 timestamp = 3;
+  int64 latency_ms = 4;
+}
+
+// VersionRequest retrieves the current version of the bresrch service
+message VersionRequest {
+  string provider_id = 1;
+}
+
+// VersionResponse returns the current version of the bresrch service
+message VersionResponse {
+  string version = 1; // e.g., "v2.0.0"
+  string commit_hash = 2; // e.g., "abc123"
+  string build_date = 3; // e.g., "2023-10-01T12:00:00Z"
+  string migration_status = 4; // e.g., "up-to-date", "pending"
+  string migration_version = 5; // e.g., "v2.0.0"
+}
+
+// ConfigRequest requests provider configuration
+message ConfigRequest {
+  string provider_id = 1;
+  string environment = 2;  // e.g., "production", "staging"
+}
+
+// ConfigResponse returns provider configuration
+message ConfigResponse {
+  bool success = 1;
+  string error = 2;
+  bytes config = 3;  // JSON-encoded provider configuration
+}
+
+// SyncRequest triggers a data sync operation
+message SyncRequest {
+  string sync_id = 1;
+  string provider_id = 2;  // ID of the provider to sync data from
+  string entity_type = 3;  // Type of data to sync (e.g., "users", "bubbles")
+  int64 since_timestamp = 4;  // Only sync data since this timestamp
+  map<string, string> options = 5;
+}
+
+// SyncResponse returns the result of a sync operation
+message SyncResponse {
+  bool success = 1;
+  string error = 2;
+  int64 synced_count = 3; // Number of records synced
+  int64 timestamp = 4; // Timestamp of the sync operation
+  int64 duration_ms = 5; // Duration of the sync operation in milliseconds
+}
+
+// PushRequest sends data from provider to bresrch
+message PushRequest {
+  string provider_id = 1;
+  string entity_type = 2; // Type of data being pushed (e.g., "users", "bubbles")
+  bytes data = 3; // JSON-encoded data array
+}
+
+// PushResponse acknowledges data push
+message PushResponse {
+  bool success = 1;
+  string error = 2;
+  int64 records_pushed = 3; // Number of records successfully pushed
+}
+
+// MigrateRequest initiates a database migration
+message MigrateRequest {
+  string provider_id = 1;
+  string migration_version = 2; // Version to migrate to
+  map<string, bytes> migrations = 5;
+}
+
+// MigrateResponse acknowledges migration status
+message MigrateResponse {
+  bool success = 1;
+  string error = 2;
+  string migration_version = 3; // Version after migration
+  string migration_status = 4; // e.g., "up-to-date", "pending"
+}

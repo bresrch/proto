@@ -2,9 +2,9 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v5.29.3
-// source: v1.proto
+// source: v2.proto
 
-package v1
+package v2
 
 import (
 	context "context"
@@ -19,14 +19,12 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Resource_GetSupportedVersions_FullMethodName     = "/proto.bresrch.v1.Resource/GetSupportedVersions"
 	Resource_Ping_FullMethodName                     = "/proto.bresrch.v1.Resource/Ping"
+	Resource_GetRunningVersion_FullMethodName        = "/proto.bresrch.v1.Resource/GetRunningVersion"
 	Resource_GetProviderConfiguration_FullMethodName = "/proto.bresrch.v1.Resource/GetProviderConfiguration"
-	Resource_SetProviderConfiguration_FullMethodName = "/proto.bresrch.v1.Resource/SetProviderConfiguration"
 	Resource_Sync_FullMethodName                     = "/proto.bresrch.v1.Resource/Sync"
 	Resource_Push_FullMethodName                     = "/proto.bresrch.v1.Resource/Push"
 	Resource_MigrateDatabase_FullMethodName          = "/proto.bresrch.v1.Resource/MigrateDatabase"
-	Resource_RegisterMigrations_FullMethodName       = "/proto.bresrch.v1.Resource/RegisterMigrations"
 )
 
 // ResourceClient is the client API for Resource service.
@@ -35,22 +33,18 @@ const (
 //
 // Resource service defines operations for handling resources with data orchestration
 type ResourceClient interface {
-	// Basic operations
-	GetSupportedVersions(ctx context.Context, in *VersionRequest, opts ...grpc.CallOption) (*VersionResponse, error)
 	// Ping tests connectivity between bresearch and provider
-	Ping(ctx context.Context, in *PingRequest, opts ...grpc.CallOption) (*PingResponse, error)
+	Ping(ctx context.Context, in *PingRequest, opts ...grpc.CallOption) (*PongResponse, error)
+	// GetRunningVersion retrieves the current version of the bresrch service
+	GetRunningVersion(ctx context.Context, in *VersionRequest, opts ...grpc.CallOption) (*VersionResponse, error)
 	// GetProviderConfiguration returns provider-specific configuration
 	GetProviderConfiguration(ctx context.Context, in *ConfigRequest, opts ...grpc.CallOption) (*ConfigResponse, error)
-	// SetProviderConfiguration sends configuration from bresearch to provider
-	SetProviderConfiguration(ctx context.Context, in *SetConfigRequest, opts ...grpc.CallOption) (*SetConfigResponse, error)
-	// Sync triggers a data sync from external API
+	// Sevice -> Provider initiated sync request
 	Sync(ctx context.Context, in *SyncRequest, opts ...grpc.CallOption) (*SyncResponse, error)
 	// Push sends collected data back to bresrch
 	Push(ctx context.Context, in *PushRequest, opts ...grpc.CallOption) (*PushResponse, error)
 	// MigrateDatabase performs database migrations
 	MigrateDatabase(ctx context.Context, in *MigrateRequest, opts ...grpc.CallOption) (*MigrateResponse, error)
-	// RegisterMigrations allows providers to register their migrations with bresearch
-	RegisterMigrations(ctx context.Context, in *RegisterMigrationsRequest, opts ...grpc.CallOption) (*RegisterMigrationsResponse, error)
 }
 
 type resourceClient struct {
@@ -61,20 +55,20 @@ func NewResourceClient(cc grpc.ClientConnInterface) ResourceClient {
 	return &resourceClient{cc}
 }
 
-func (c *resourceClient) GetSupportedVersions(ctx context.Context, in *VersionRequest, opts ...grpc.CallOption) (*VersionResponse, error) {
+func (c *resourceClient) Ping(ctx context.Context, in *PingRequest, opts ...grpc.CallOption) (*PongResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(VersionResponse)
-	err := c.cc.Invoke(ctx, Resource_GetSupportedVersions_FullMethodName, in, out, cOpts...)
+	out := new(PongResponse)
+	err := c.cc.Invoke(ctx, Resource_Ping_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *resourceClient) Ping(ctx context.Context, in *PingRequest, opts ...grpc.CallOption) (*PingResponse, error) {
+func (c *resourceClient) GetRunningVersion(ctx context.Context, in *VersionRequest, opts ...grpc.CallOption) (*VersionResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(PingResponse)
-	err := c.cc.Invoke(ctx, Resource_Ping_FullMethodName, in, out, cOpts...)
+	out := new(VersionResponse)
+	err := c.cc.Invoke(ctx, Resource_GetRunningVersion_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -85,16 +79,6 @@ func (c *resourceClient) GetProviderConfiguration(ctx context.Context, in *Confi
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ConfigResponse)
 	err := c.cc.Invoke(ctx, Resource_GetProviderConfiguration_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *resourceClient) SetProviderConfiguration(ctx context.Context, in *SetConfigRequest, opts ...grpc.CallOption) (*SetConfigResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(SetConfigResponse)
-	err := c.cc.Invoke(ctx, Resource_SetProviderConfiguration_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -131,38 +115,24 @@ func (c *resourceClient) MigrateDatabase(ctx context.Context, in *MigrateRequest
 	return out, nil
 }
 
-func (c *resourceClient) RegisterMigrations(ctx context.Context, in *RegisterMigrationsRequest, opts ...grpc.CallOption) (*RegisterMigrationsResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(RegisterMigrationsResponse)
-	err := c.cc.Invoke(ctx, Resource_RegisterMigrations_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // ResourceServer is the server API for Resource service.
 // All implementations must embed UnimplementedResourceServer
 // for forward compatibility.
 //
 // Resource service defines operations for handling resources with data orchestration
 type ResourceServer interface {
-	// Basic operations
-	GetSupportedVersions(context.Context, *VersionRequest) (*VersionResponse, error)
 	// Ping tests connectivity between bresearch and provider
-	Ping(context.Context, *PingRequest) (*PingResponse, error)
+	Ping(context.Context, *PingRequest) (*PongResponse, error)
+	// GetRunningVersion retrieves the current version of the bresrch service
+	GetRunningVersion(context.Context, *VersionRequest) (*VersionResponse, error)
 	// GetProviderConfiguration returns provider-specific configuration
 	GetProviderConfiguration(context.Context, *ConfigRequest) (*ConfigResponse, error)
-	// SetProviderConfiguration sends configuration from bresearch to provider
-	SetProviderConfiguration(context.Context, *SetConfigRequest) (*SetConfigResponse, error)
-	// Sync triggers a data sync from external API
+	// Sevice -> Provider initiated sync request
 	Sync(context.Context, *SyncRequest) (*SyncResponse, error)
 	// Push sends collected data back to bresrch
 	Push(context.Context, *PushRequest) (*PushResponse, error)
 	// MigrateDatabase performs database migrations
 	MigrateDatabase(context.Context, *MigrateRequest) (*MigrateResponse, error)
-	// RegisterMigrations allows providers to register their migrations with bresearch
-	RegisterMigrations(context.Context, *RegisterMigrationsRequest) (*RegisterMigrationsResponse, error)
 	mustEmbedUnimplementedResourceServer()
 }
 
@@ -173,17 +143,14 @@ type ResourceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedResourceServer struct{}
 
-func (UnimplementedResourceServer) GetSupportedVersions(context.Context, *VersionRequest) (*VersionResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetSupportedVersions not implemented")
-}
-func (UnimplementedResourceServer) Ping(context.Context, *PingRequest) (*PingResponse, error) {
+func (UnimplementedResourceServer) Ping(context.Context, *PingRequest) (*PongResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Ping not implemented")
+}
+func (UnimplementedResourceServer) GetRunningVersion(context.Context, *VersionRequest) (*VersionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRunningVersion not implemented")
 }
 func (UnimplementedResourceServer) GetProviderConfiguration(context.Context, *ConfigRequest) (*ConfigResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetProviderConfiguration not implemented")
-}
-func (UnimplementedResourceServer) SetProviderConfiguration(context.Context, *SetConfigRequest) (*SetConfigResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SetProviderConfiguration not implemented")
 }
 func (UnimplementedResourceServer) Sync(context.Context, *SyncRequest) (*SyncResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Sync not implemented")
@@ -193,9 +160,6 @@ func (UnimplementedResourceServer) Push(context.Context, *PushRequest) (*PushRes
 }
 func (UnimplementedResourceServer) MigrateDatabase(context.Context, *MigrateRequest) (*MigrateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method MigrateDatabase not implemented")
-}
-func (UnimplementedResourceServer) RegisterMigrations(context.Context, *RegisterMigrationsRequest) (*RegisterMigrationsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method RegisterMigrations not implemented")
 }
 func (UnimplementedResourceServer) mustEmbedUnimplementedResourceServer() {}
 func (UnimplementedResourceServer) testEmbeddedByValue()                  {}
@@ -218,24 +182,6 @@ func RegisterResourceServer(s grpc.ServiceRegistrar, srv ResourceServer) {
 	s.RegisterService(&Resource_ServiceDesc, srv)
 }
 
-func _Resource_GetSupportedVersions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(VersionRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ResourceServer).GetSupportedVersions(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Resource_GetSupportedVersions_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ResourceServer).GetSupportedVersions(ctx, req.(*VersionRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _Resource_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(PingRequest)
 	if err := dec(in); err != nil {
@@ -254,6 +200,24 @@ func _Resource_Ping_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Resource_GetRunningVersion_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(VersionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ResourceServer).GetRunningVersion(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Resource_GetRunningVersion_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ResourceServer).GetRunningVersion(ctx, req.(*VersionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Resource_GetProviderConfiguration_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ConfigRequest)
 	if err := dec(in); err != nil {
@@ -268,24 +232,6 @@ func _Resource_GetProviderConfiguration_Handler(srv interface{}, ctx context.Con
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ResourceServer).GetProviderConfiguration(ctx, req.(*ConfigRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Resource_SetProviderConfiguration_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SetConfigRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ResourceServer).SetProviderConfiguration(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Resource_SetProviderConfiguration_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ResourceServer).SetProviderConfiguration(ctx, req.(*SetConfigRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -344,24 +290,6 @@ func _Resource_MigrateDatabase_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Resource_RegisterMigrations_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RegisterMigrationsRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ResourceServer).RegisterMigrations(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Resource_RegisterMigrations_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ResourceServer).RegisterMigrations(ctx, req.(*RegisterMigrationsRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // Resource_ServiceDesc is the grpc.ServiceDesc for Resource service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -370,20 +298,16 @@ var Resource_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*ResourceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetSupportedVersions",
-			Handler:    _Resource_GetSupportedVersions_Handler,
-		},
-		{
 			MethodName: "Ping",
 			Handler:    _Resource_Ping_Handler,
 		},
 		{
-			MethodName: "GetProviderConfiguration",
-			Handler:    _Resource_GetProviderConfiguration_Handler,
+			MethodName: "GetRunningVersion",
+			Handler:    _Resource_GetRunningVersion_Handler,
 		},
 		{
-			MethodName: "SetProviderConfiguration",
-			Handler:    _Resource_SetProviderConfiguration_Handler,
+			MethodName: "GetProviderConfiguration",
+			Handler:    _Resource_GetProviderConfiguration_Handler,
 		},
 		{
 			MethodName: "Sync",
@@ -397,11 +321,7 @@ var Resource_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "MigrateDatabase",
 			Handler:    _Resource_MigrateDatabase_Handler,
 		},
-		{
-			MethodName: "RegisterMigrations",
-			Handler:    _Resource_RegisterMigrations_Handler,
-		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "v1.proto",
+	Metadata: "v2.proto",
 }
