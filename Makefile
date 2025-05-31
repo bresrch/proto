@@ -1,10 +1,24 @@
-.PHONY: setup clean v1 v2
+.PHONY: setup clean v1 v2 generate_proto
 
 # Makefile for generating gRPC code from .proto files
 # This Makefile assumes you have protoc, protoc-gen-go, and protoc-gen-go-grpc installed.
 # It also assumes you have a working Go environment set up.
- 
+
 all: v1 v2
+
+# Define a generic rule for generating protobuf files
+# Usage: make generate_proto VERSION=v1
+generate_proto:
+	$(eval VERSION_UPPER := $(shell echo $(VERSION) | tr 'a-z' 'A-Z'))
+	@echo "Generating protobuf files for $(VERSION)..."
+	find . -name '$(VERSION)/*.pb.go' -delete
+	mkdir -p $(VERSION)/gen/$(VERSION)
+	protoc --proto_path=./$(VERSION) \
+		--go_out=./$(VERSION)/gen/$(VERSION) --go_opt=paths=source_relative \
+		--go-grpc_out=./$(VERSION)/gen/$(VERSION) --go-grpc_opt=paths=source_relative \
+		$(VERSION).proto
+	@echo "Running go mod tidy and go mod vendor for $(VERSION)..."
+	cd $(VERSION) && go mod tidy && go mod vendor && cd ..
 
 setup:
 	go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
@@ -13,21 +27,13 @@ setup:
 
 clean:
 	rm -rf vendor
+	rm -rf v1/gen v1/vendor v1/go.sum
+	rm -rf v2/gen v2/vendor v2/go.sum
 
 v1: clean
-	find . -name 'v1/*.pb.go' -delete
-	protoc --proto_path=. \
-		--go_out=./gen/v1 --go_opt=paths=source_relative \
-		--go-grpc_out=./gen/v1 --go-grpc_opt=paths=source_relative \
-		v1.proto
-	go mod tidy
-	go mod vendor
+	$(MAKE) generate_proto VERSION=v1
 
 v2: clean
-	find . -name 'v2/*.pb.go' -delete
-	protoc --proto_path=. \
-		--go_out=./gen/v2 --go_opt=paths=source_relative \
-		--go-grpc_out=./gen/v2 --go-grpc_opt=paths=source_relative \
-		v2.proto
-	go mod tidy
-	go mod vendor
+	$(MAKE) generate_proto VERSION=v2
+
+

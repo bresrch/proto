@@ -867,7 +867,7 @@ const file_v2_proto_rawDesc = "" +
 	"\x18GetProviderConfiguration\x12\x1f.proto.bresrch.v1.ConfigRequest\x1a .proto.bresrch.v1.ConfigResponse\x12E\n" +
 	"\x04Sync\x12\x1d.proto.bresrch.v1.SyncRequest\x1a\x1e.proto.bresrch.v1.SyncResponse\x12E\n" +
 	"\x04Push\x12\x1d.proto.bresrch.v1.PushRequest\x1a\x1e.proto.bresrch.v1.PushResponse\x12V\n" +
-	"\x0fMigrateDatabase\x12 .proto.bresrch.v1.MigrateRequest\x1a!.proto.bresrch.v1.MigrateResponseB!Z\x1fgithub.com/bresrch/proto/gen/v2b\x06proto3"
+	"\x0fMigrateDatabase\x12 .proto.bresrch.v1.MigrateRequest\x1a!.proto.bresrch.v1.MigrateResponseB$Z\"github.com/bresrch/proto/v2/gen/v2b\x06proto3"
 
 var (
 	file_v2_proto_rawDescOnce sync.Once

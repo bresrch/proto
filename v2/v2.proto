@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 package proto.bresrch.v1;
-option go_package = "github.com/bresrch/proto/gen/v2";
+option go_package = "github.com/bresrch/proto/v2/gen/v2";
 
 // Resource service defines operations for handling resources with data orchestration
 service Resource {
