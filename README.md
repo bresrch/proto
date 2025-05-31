@@ -12,6 +12,11 @@ The main service defined is `Resource`, which includes operations for:
 - Data synchronization
 - Database migrations
 
+## Versions
+
+- **v1**: Initial protocol definitions
+- **v2**: Updated protocol with enhanced features and improved data structures
+
 ## Requirements
 
 - Go 1.24+
@@ -36,12 +41,14 @@ This will install:
 Generate Go code from Protocol Buffer definitions:
 
 ```bash
-make v1
+make v1    # Generate v1 protocol definitions
+make v2    # Generate v2 protocol definitions
+make all   # Generate both v1 and v2 definitions
 ```
 
 This will:
 1. Clean any previously generated files
-2. Generate Go code from the v1 protocol definitions
+2. Generate Go code from the protocol definitions
 3. Update Go modules and create a vendor directory
 
 ## Usage
@@ -61,18 +68,22 @@ Then implement the required gRPC service interfaces defined in the generated Go 
 ├── Makefile               # Build automation
 ├── go.mod                 # Go module definition
 ├── go.sum                 # Go module checksums
-├── v1/                    # Protocol buffer definitions (version 1)
-│   ├── gen/               # Generated Go code
-│   │   ├── resource.pb.go
-│   │   └── resource_grpc.pb.go
-│   └── resource.proto     # Protocol buffer definition file
+├── v1.proto               # Protocol buffer definitions (version 1)
+├── v2.proto               # Protocol buffer definitions (version 2)
+├── gen/                   # Generated Go code
+│   ├── v1/                # Version 1 generated code
+│       ├── v1.pb.go
+│       └── v1_grpc.pb.go
+│   └── v2/                # Version 2 generated code
+│       ├── v2.pb.go
+│       └── v2_grpc.pb.go
 └── vendor/                # Vendored dependencies
 ```
 
 ## Contributing
 
 1. Ensure you understand the existing protocol definitions
-2. Make your changes to the .proto files
-3. Generate the corresponding Go code with `make v1`
+2. Make your changes to the .proto files (v1.proto or v2.proto)
+3. Generate the corresponding Go code with `make v1`, `make v2`, or `make all`
 4. Test your changes with provider implementations
 5. Submit a pull request

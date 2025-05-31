@@ -12,10 +12,10 @@ setup:
 	brew install protobuf
 
 clean:
-	find . -name '*.pb.go' -delete
 	rm -rf vendor
 
 v1: clean
+	find . -name 'v1/*.pb.go' -delete
 	protoc --proto_path=. \
 		--go_out=./gen/v1 --go_opt=paths=source_relative \
 		--go-grpc_out=./gen/v1 --go-grpc_opt=paths=source_relative \
@@ -24,6 +24,7 @@ v1: clean
 	go mod vendor
 
 v2: clean
+	find . -name 'v2/*.pb.go' -delete
 	protoc --proto_path=. \
 		--go_out=./gen/v2 --go_opt=paths=source_relative \
 		--go-grpc_out=./gen/v2 --go-grpc_opt=paths=source_relative \
